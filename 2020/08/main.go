@@ -39,7 +39,7 @@ func getCode(codeLines []string) (code []OP) {
 	return
 }
 
-func execOp(ip *int, acc *int, op OP) {
+func execOp(ip, acc *int, op OP) {
 	switch op.opCode {
 	case "acc":
 		*acc += op.opValue
