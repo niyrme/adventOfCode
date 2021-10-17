@@ -51,26 +51,33 @@ def main(args: Sequence[str] = None) -> int:
 				continue
 
 			try:
-				if int(_year) > newest:
-					newest = int(_year)
+				y = int(_year)
+				if y > newest:
+					newest = y
 			except ValueError:
 				continue
-			except Exception:
-				raise
 		year = newest
 
 	if parsedArgs.day:
 		day = parsedArgs.day
 	else:
-		newest = 0
+		newest = -1
+		os.makedirs(str(year), exist_ok=True)
 		for _day in os.listdir(str(year)):
 			if not os.path.isdir(f"{year}/{_day}"):
 				continue
 
-			if int(_day) > newest:
-				newest = int(_day)
+			try:
+				d = int(_day)
+				if d > newest:
+					newest = d
+			except ValueError:
+				continue
 		day = newest + 1
 
+	if day == 0:
+		print("Created template directory. Please add your template here and run again")
+		return 2
 	if not 0 < day < 26:
 		print("The days in Advent of Code only go from 1 to 25")
 		return 1
