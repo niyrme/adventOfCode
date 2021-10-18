@@ -2,6 +2,7 @@
 My solutions of [AdventOfCode]
 
 ## Solutions
+- [2019](./2019/) - Nim
 - [2020](./2020/) - Go
 - [2021](./2021/) - Python
 
