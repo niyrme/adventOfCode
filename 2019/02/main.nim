@@ -1,43 +1,33 @@
 from strutils import parseInt, split
 
-type value = object
-  pos: int
-  val: int
-
 proc loopInput(instructions: seq[int]): int =
   var
     i = instructions
     pos = 0
-    i1: value
-    i2: value
-    o: value
 
   #  1 : add
   #  2 : multiply
   # 99 : exit/return
   #  _ : error
   while true:
-    let code = i[pos]
+    let
+      code = i[pos]
 
-    i1.pos = i[pos + 1]
-    i1.val = i[i1.pos]
+      i1 = i[i[pos + 1]]
+      i2 = i[i[pos + 2]]
 
-    i2.pos = i[pos + 2]
-    i2.val = i[i2.pos]
-
-    o.pos = i[pos + 3]
+      outPos = i[pos + 3]
 
     if code == 1:
-      o.val = i1.val + i2.val
+      i[outPos] = i1 + i2
     elif code == 2:
-      o.val = i1.val * i2.val
+      i[outPos] = i1 * i2
     elif code == 99:
       return i[0]
     else:
       echo "Unsupported OP-code at index ", pos, ": ", code
       quit(1)
 
-    i[o.pos] = o.val
     pos += 4
 
   quit(2)
