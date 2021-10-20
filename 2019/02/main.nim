@@ -18,15 +18,16 @@ proc loopInput(instructions: seq[int]): int =
 
       outPos = i[pos + 3]
 
-    if code == 1:
-      i[outPos] = i1 + i2
-    elif code == 2:
-      i[outPos] = i1 * i2
-    elif code == 99:
-      return i[0]
-    else:
-      echo "Unsupported OP-code at index ", pos, ": ", code
-      quit(1)
+    case code:
+      of 1:
+        i[outPos] = i1 + i2
+      of 2:
+        i[outPos] = i1 * i2
+      of 99:
+        return i[0]
+      else:
+        echo "Unsupported OP-code at index ", pos, ": ", code
+        quit(1)
 
     pos += 4
 
