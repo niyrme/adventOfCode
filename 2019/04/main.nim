@@ -56,14 +56,17 @@ proc part2(): int =
 proc main(): int =
   # Tests
   var testsFailed = false
-  for test in [(111111, true, 1), (223450, false, 2), (123789, false, 3)]:
-    if checkPassword1(test[0]) != test[1]:
-      echo "Part 1 | Test $1 Failed | Expected $2, got $3" % [$test[2], $test[1], $test[0]]
-      testsFailed = true
-  for test in [(112233, true, 1), (123444, false, 2), (111122, true, 3)]:
-    if checkPassword2(test[0]) != test[1]:
-      echo "Part 2 | Test $1 Failed | Expected $2, got $3" % [$test[2], $test[1], $test[0]]
-      testsFailed = true
+  for test in [
+    # PART TEST_NR CALLFN INPUT EXPECTED
+    (1, 1, checkPassword1, 111111, true),
+    (1, 2, checkPassword1, 223450, false),
+    (1, 3, checkPassword1, 123789, false),
+    (2, 1, checkPassword2, 112233, true),
+    (2, 2, checkPassword2, 123444, false),
+    (2, 3, checkPassword2, 111122, true),
+  ]:
+    if test[2](test[3]) != test[4]:
+      echo "Part $1 | Test $2 Failed" % [$test[0], $test[1]]
 
   if testsFailed:
     return 1

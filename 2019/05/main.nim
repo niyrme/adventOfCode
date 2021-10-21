@@ -126,11 +126,14 @@ proc part2(path: string): int =
 proc main(): int =
   # Tests
   var testsFailed = false
-  for test in [(@[1101, 100, -1, 4, 0], 1101, 1), (@[1002, 4, 3, 4, 33], 1002, 2)]:
+  for test in [
+    (1, 1, @[1101, 100, -1, 4, 0], 1101),
+    (1, 2, @[1002, 4, 3, 4, 33], 1002),
+  ]:
     var inp: seq[int]
-    let ret = loopInput(test[0], inp)
-    if ret != test[1]:
-      echo "Part 1 | Test $1 failed | Expected $2, got $3" % [$test[2], $test[1], $test[0]]
+    let res = loopInput(test[2], inp)
+    if res != test[3]:
+      echo "Part $1 | Test $2 failed | Expected $3, got $4" % [$test[0], $test[1], $test[3], $res]
       testsFailed = true
 
   if testsFailed:
