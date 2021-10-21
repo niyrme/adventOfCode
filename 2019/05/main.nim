@@ -1,4 +1,4 @@
-from strutils import align, parseInt, split
+from strutils import `%`, align, parseInt, split
 from system import pop
 
 proc loopInput(instructions: seq[int], params: var seq[int]): int =
@@ -13,7 +13,7 @@ proc loopInput(instructions: seq[int], params: var seq[int]): int =
     elif mode == 1:
       return i[pc + n]
     else:
-      echo "Unknown mode ", mode, "!"
+      echo "Unknown mode $1!" % $mode
       quit(1)
 
   #  1 : ADD | `i[[pos+1]] * i[[pos+2]] -> i[pos+3]`
@@ -50,16 +50,10 @@ proc loopInput(instructions: seq[int], params: var seq[int]): int =
         param2 = param(2, B)
         param3 = param(3, 1)
 
-        # echo "Param 1 : ", param1
-        # echo "Param 2 : ", param2
-        # echo "Param 3 : ", param3
-
         var value: int
         if DE == 1:
-          # echo "ADD ", param1, " + ", param2, " -> ", param3
           value = param1 + param2
         elif DE == 2:
-          # echo "MUL ", param1, " * ", param2, " -> ", param3
           value = param1 * param2
 
         i[param3] = value
@@ -99,40 +93,31 @@ proc loopInput(instructions: seq[int], params: var seq[int]): int =
       of 99:
         return i[0]
       else:
-        echo "Unsupported OP-code at index ", pc, ": ", DE
+        echo "Unsupported OP-code at index $1: $2" % [$pc, $DE]
         quit(1)
 
   quit(2)
 
-proc part1(path: string): int =
-  var
-    f: File
-    instructions: seq[int]
+proc parseFile(path: string): seq[int] =
+  var f: File
   if open(f, path, fmRead):
     try:
       for instr in split(f.readLine(), ','):
-        instructions.add(parseInt(instr))
+        result.add(parseInt(instr))
     except EOFError:
       discard
     finally:
       close(f)
+
+proc part1(path: string): int =
+  let instructions = parseFile(path)
 
   # hard coded parameter
   var inp: seq[int] = @[1]
   return loopInput(instructions, inp)
 
 proc part2(path: string): int =
-  var
-    f: File
-    instructions: seq[int]
-  if open(f, path, fmRead):
-    try:
-      for instr in split(f.readLine(), ','):
-        instructions.add(parseInt(instr))
-    except EOFError:
-      discard
-    finally:
-      close(f)
+  let instructions = parseFile(path)
 
   # hard coded parameter
   var inp: seq[int] = @[5]
@@ -145,7 +130,7 @@ proc main(): int =
     var inp: seq[int]
     let ret = loopInput(test[0], inp)
     if ret != test[1]:
-      echo "Part 1 | Test ", test[2], " failed, expected ", test[1], " got ", ret
+      echo "Part 1 | Test $1 failed | Expected $2, got $3" % [$test[2], $test[1], $test[0]]
       testsFailed = true
 
   if testsFailed:

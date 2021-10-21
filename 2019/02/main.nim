@@ -1,4 +1,4 @@
-from strutils import parseInt, split
+from strutils import `%`, parseInt, split
 
 proc loopInput(instructions: seq[int]): int =
   var
@@ -26,25 +26,26 @@ proc loopInput(instructions: seq[int]): int =
       of 99:
         return i[0]
       else:
-        echo "Unsupported OP-code at index ", pos, ": ", code
+        echo "Unsupported OP-code at index $1: $2" % [$pos, $code]
         quit(1)
 
     pos += 4
 
   quit(2)
 
-proc part1(path: string): int =
-  var
-    f: File
-    instructions: seq[int]
+proc parseFile(path: string): seq[int] =
+  var f: File
   if open(f, path, fmRead):
     try:
       for instr in split(f.readLine(), ','):
-        instructions.add(parseInt(instr))
+        result.add(parseInt(instr))
     except EOFError:
       discard
     finally:
       close(f)
+
+proc part1(path: string): int =
+  var instructions = parseFile(path)
 
   instructions[1] = 12
   instructions[2] = 2
@@ -52,17 +53,7 @@ proc part1(path: string): int =
 
 proc part2(path: string): int =
   let target = 19690720
-  var
-    f: File
-    instructions: seq[int]
-  if open(f, path, fmRead):
-    try:
-      for instr in split(f.readLine(), ','):
-        instructions.add(parseInt(instr))
-    except EOFError:
-      discard
-    finally:
-      close(f)
+  var instructions = parseFile(path)
 
   for noun in 0..<100:
     for verb in 0..<100:

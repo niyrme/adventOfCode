@@ -1,8 +1,13 @@
 import std/tables
 from sequtils import zip
-from strutils import parseInt, split
+from strutils import `%`, parseInt, split
 
-let DIRECTIONS = {'U': (x: 0, y: 1), 'R': (x: 1, y: 0), 'D': (x: 0, y: -1), 'L': (x: -1, y: 0)}.newTable
+let DIRECTIONS = {
+  'U': (x: 0, y: 1),
+  'R': (x: 1, y: 0),
+  'D': (x: 0, y: -1),
+  'L': (x: -1, y: 0),
+}.newTable
 
 type
   Direction = tuple[dir: char, amnt: int]
@@ -36,7 +41,7 @@ proc getIntersections(visited1, visited2: Table[Pos, bool]): seq[Pos] =
     if k in visited2:
       result.add(k)
 
-proc part1(path: string): int =
+proc parseFile(path: string): tuple[dirs1, dirs2: seq[Direction]] =
   var
     f: File
     directions1: seq[Direction]
@@ -56,6 +61,14 @@ proc part1(path: string): int =
       discard
     finally:
       close(f)
+
+  return (directions1, directions2)
+
+proc part1(path: string): int =
+  let
+    directions = parseFile(path)
+    directions1 = directions[0]
+    directions2 = directions[1]
 
   let
     vis1 = getVisited(directions1)
@@ -103,37 +116,27 @@ proc toFirstIntersection(dir1, dir2: seq[Direction]): int =
   return min(intersections)
 
 proc part2(path: string): int =
-  var
-    f: File
-    directions1: seq[Direction]
-    directions2: seq[Direction]
-  if open(f, path, fmRead):
-    try:
-      let
-        l1 = split(f.readLine(), ',')
-        l2 = split(f.readLine(), ',')
-      for dir_zip in zip(l1, l2):
-        let
-          d0 = dir_zip[0]
-          d1 = dir_zip[1]
-        directions1.add((dir: d0[0], amnt: parseInt(d0[1..^1])))
-        directions2.add((dir: d1[0], amnt: parseInt(d1[1..^1])))
-    except EOFError:
-      discard
-    finally:
-      close(f)
+  let
+    directions = parseFile(path)
+    directions1 = directions[0]
+    directions2 = directions[1]
 
   return toFirstIntersection(directions1, directions2)
 
 proc main(): int =
-  let res1 = part1("./testInputPart1.txt")
-  if res1 != 159:
-    echo "Expected 159, got ", res1, " instead!"
-    return 1
+  var testsFailed = false
 
-  let res2 = part2("./testInputPart2.txt")
-  if res2 != 410:
-    echo "Expected 410, got ", res2, " instead!"
+  let res1 = (part1("./testInputPart1.txt"), 159)
+  if res1[0] != res1[1]:
+    echo "Part 1 | Expected $1, got $2 instead!" % [$res1[1], $res1[0]]
+    testsFailed = true
+
+  let res2 = (part2("./testInputPart2.txt"), 410)
+  if res2[0] != res2[1]:
+    echo "Part 2 | Expected $1, got $2 instead!" % [$res2[1], $res2[0]]
+    testsFailed = true
+
+  if testsFailed:
     return 1
 
   echo "Part 1 -> ", part1("./input.txt")
