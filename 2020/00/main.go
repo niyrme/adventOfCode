@@ -3,6 +3,7 @@ package main
 import (
 	"io/ioutil"
 	"log"
+	"os"
 	"strings"
 )
 
@@ -17,18 +18,35 @@ func solve(path string) (ret interface{}) {
 	return
 }
 
-func main() {
-	var (
-		expected1 interface{}
-		expected2 interface{}
-	)
+type test struct {
+	part     int
+	id       int
+	path     string
+	expected interface{}
+}
 
-	log.Println("Testing Part 1")
-	if ret := solve("./testInputPart1.txt"); ret != expected1 {
-		log.Fatalf("Test Failed! Expected %v, got %v instead", expected1, ret)
+func _main() int {
+	var tests []test = []test{
+		{1, 1, "./testInputPart1.txt", nil},
+		{2, 1, "./testInputPart2.txt", nil},
 	}
-	log.Println("Testing Part 2")
-	if ret := solve("./testInputPart1.txt"); ret != expected2 {
-		log.Fatalf("Test Failed! Expected %v, got %v instead", expected2, ret)
+
+	testsFailed := false
+
+	for _, test := range tests {
+		if ret := solve(test.path); ret != test.expected {
+			log.Println("Part %v | Test %v failed | Expected %v, got %v", test.part, test.id, test.expected, ret)
+			testsFailed = true
+		}
 	}
+
+	if testsFailed {
+		return 1
+	} else {
+		return 0
+	}
+}
+
+func main() {
+	os.Exit(_main())
 }
