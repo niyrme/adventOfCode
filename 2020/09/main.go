@@ -119,15 +119,6 @@ outer:
 	return -1
 }
 
-type test struct {
-	part     int
-	id       int
-	path     string
-	expected int
-	preamble int
-	f        func(string, int) int
-}
-
 func _main() int {
 	testsFailed := false
 	if res := part1("./testInput.txt", 5); res != 127 {
