@@ -20,7 +20,8 @@ def addDay(year: int, day: int) -> None:
 		with (
 			open(f"{ipth}/{file}", "r") as i,
 			open(f"{opth}/{file}", "w+") as o,
-		): o.write(i.read())
+		):
+			o.write(i.read())
 
 
 def main(args: Sequence[str] = None) -> int:
@@ -52,10 +53,11 @@ def main(args: Sequence[str] = None) -> int:
 
 			try:
 				y = int(_year)
-				if y > newest:
-					newest = y
 			except ValueError:
 				continue
+			else:
+				if y > newest:
+					newest = y
 		year = newest
 
 	if parsedArgs.day:
@@ -69,10 +71,11 @@ def main(args: Sequence[str] = None) -> int:
 
 			try:
 				d = int(_day)
-				if d > newest:
-					newest = d
 			except ValueError:
 				continue
+			else:
+				if d > newest:
+					newest = d
 		day = newest + 1
 
 	if day == 0:
