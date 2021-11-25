@@ -84,12 +84,7 @@ func solve(part int, path string) int {
 		}
 	}
 
-	parts := map[int]func([]int) int{
-		1: part1,
-		2: part2,
-	}
-
-	return parts[part](adapters)
+	return []func([]int) int{part1, part2}[part-1](adapters)
 }
 
 type test struct {
