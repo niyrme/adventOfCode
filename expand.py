@@ -47,6 +47,10 @@ def main(args: Sequence[str] = None) -> int:
 		year = parsedArgs.year
 	else:
 		newest = 0
+		if str(parsedArgs.year) not in os.listdir("."):
+			# year does not exist
+			os.makedirs(f"./{parsedArgs.year}/00")
+			return 0
 		for _year in os.listdir("."):
 			if not os.path.isdir(_year):
 				continue
@@ -79,6 +83,7 @@ def main(args: Sequence[str] = None) -> int:
 		day = newest + 1
 
 	if day == 0:
+		os.makedirs(f"{year}/00", exist_ok=True)
 		print("Created template directory. Please add your template here and run again")
 		return 2
 	if not 0 < day < 26:
