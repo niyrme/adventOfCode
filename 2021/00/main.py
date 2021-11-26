@@ -1,36 +1,47 @@
 import sys
+from typing import Callable
+from typing import NamedTuple
+from typing import Sequence
 
 
-def _part1(path: str):
-	with open(path, "r") as f:
-		...
+def _part1(inp: Sequence):
+	...
 
 
-def _part2(path: str):
-	with open(path, "r") as f:
-		...
+def _part2(inp: Sequence):
+	...
 
 
 def solve(path: str, part: int):
-	{1: _part1, 2: _part2}[part](path)
+	with open(path, "r") as i:
+		return (_part1, _part2)[part - 1]((line.strip() for line in i.readlines()))
+
+
+class Test(NamedTuple):
+	part: int
+	test: int
+	func: Callable
+	inp: Sequence
+	expected: None
 
 
 def main() -> int:
 	testsFailed = False
 
 	for test in (
-		(1, 1, "./testInputPart1.txt", None),
-		(2, 1, "./testInputPart2.txt", None),
+		Test(1, 1, _part1, tuple(), None),
+		Test(2, 1, _part2, tuple(), None),
 	):
-		res = solve(test[2])
-		if res != test[3]:
-			print(f"Part {test[0]} | Test {test[1]} failed | Expected {test[3]}, got {res}", file=sys.stderr)
+		res = test.func(test.inp)
+		if res != test.expected:
+			print(f"Part {test.part} | Test {test.test} failed | Expected {test.expected}, got {res}", file=sys.stderr)
 			testsFailed = True
 
 	if testsFailed is True:
 		return 1
 	else:
-		print(solve("./input.txt"))
+		print(solve("./input.txt", 1))
+		print(solve("./input.txt", 2))
 		return 0
 
 
