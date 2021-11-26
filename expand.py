@@ -20,7 +20,8 @@ def addDay(year: int, day: int) -> None:
 		with (
 			open(f"{ipth}/{file}", "r") as i,
 			open(f"{opth}/{file}", "w+") as o,
-		): o.write(i.read())
+		):
+			o.write(i.read())
 
 
 def main(args: Sequence[str] = None) -> int:
@@ -46,31 +47,45 @@ def main(args: Sequence[str] = None) -> int:
 		year = parsedArgs.year
 	else:
 		newest = 0
+		if str(parsedArgs.year) not in os.listdir("."):
+			# year does not exist
+			os.makedirs(f"./{parsedArgs.year}/00")
+			return 0
 		for _year in os.listdir("."):
 			if not os.path.isdir(_year):
 				continue
 
 			try:
-				if int(_year) > newest:
-					newest = int(_year)
+				y = int(_year)
 			except ValueError:
 				continue
-			except Exception:
-				raise
+			else:
+				if y > newest:
+					newest = y
 		year = newest
 
 	if parsedArgs.day:
 		day = parsedArgs.day
 	else:
-		newest = 0
+		newest = -1
+		os.makedirs(str(year), exist_ok=True)
 		for _day in os.listdir(str(year)):
 			if not os.path.isdir(f"{year}/{_day}"):
 				continue
 
-			if int(_day) > newest:
-				newest = int(_day)
+			try:
+				d = int(_day)
+			except ValueError:
+				continue
+			else:
+				if d > newest:
+					newest = d
 		day = newest + 1
 
+	if day == 0:
+		os.makedirs(f"{year}/00", exist_ok=True)
+		print("Created template directory. Please add your template here and run again")
+		return 2
 	if not 0 < day < 26:
 		print("The days in Advent of Code only go from 1 to 25")
 		return 1
