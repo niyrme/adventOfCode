@@ -2,7 +2,6 @@ import sys
 from typing import Callable
 from typing import NamedTuple
 from typing import Sequence
-from typing import Union
 
 
 def _part1(inp: Sequence):
@@ -13,13 +12,8 @@ def _part2(inp: Sequence):
 	...
 
 
-def solve(inp: Union[str, Sequence], part: int):
-	partFn = (_part1, _part2)[part - 1]
-	if isinstance(inp, str):
-		with open(inp, "r") as i:
-			return partFn((line.strip() for line in i.readlines()))
-	else:
-		partFn(inp)
+def solve(inp: Sequence, part: int):
+	return (_part1, _part2)[part - 1](inp)
 
 
 class Test(NamedTuple):
@@ -45,8 +39,9 @@ def main() -> int:
 	if testsFailed is True:
 		return 1
 	else:
-		print(solve("./input.txt", 1))
-		print(solve("./input.txt", 2))
+		with open("./input.txt") as inp:
+			print(solve(inp.read().strip().splitlines(), 1))
+			print(solve(inp.read().strip().splitlines(), 2))
 		return 0
 
 
