@@ -2,6 +2,7 @@ import sys
 from typing import Callable
 from typing import NamedTuple
 from typing import Sequence
+from typing import Union
 
 
 def _part1(inp: Sequence):
@@ -12,9 +13,13 @@ def _part2(inp: Sequence):
 	...
 
 
-def solve(path: str, part: int):
-	with open(path, "r") as i:
-		return (_part1, _part2)[part - 1]((line.strip() for line in i.readlines()))
+def solve(inp: Union[str, Sequence], part: int):
+	partFn = (_part1, _part2)[part - 1]
+	if isinstance(inp, str):
+		with open(inp, "r") as i:
+			return partFn((line.strip() for line in i.readlines()))
+	else:
+		partFn(inp)
 
 
 class Test(NamedTuple):
