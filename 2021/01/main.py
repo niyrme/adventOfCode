@@ -2,6 +2,7 @@
 
 import os
 from typing import Callable
+from typing import Literal
 from typing import Sequence
 from typing import Type
 from typing import TypeVar
@@ -31,12 +32,12 @@ def _part2(depths: Sequence[T]) -> T:
 	# return _part1(sum((depths[i], depths[i + 1], depths[i + 2])) for i in range(len(depths) - 2))
 
 
-def solve(inp: Sequence[T], part: int, typ: Type):
+def solve(inp: Sequence[T], part: Literal[1, 2], typ: Type):
 	return (_part1, _part2)[part - 1](tuple(typ(line) for line in inp))
 
 
 def main() -> int:
-	ret: pytest.ExitCode = pytest.main([__file__, "--no-header", "--no-summary"])
+	ret: pytest.ExitCode = pytest.main([__file__, "--no-header"])
 	if ret != pytest.ExitCode.OK:
 		return int(ret)
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
