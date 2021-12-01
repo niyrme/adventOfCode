@@ -8,13 +8,13 @@ T = TypeVar("T")
 
 
 def _part1(depths: Sequence[T]) -> T:
-	prev = 0
-	incs = -1
-	for i in depths:
-		if i > prev:
+	incs = 0
+	for i in range(1, len(depths)):
+		if depths[i - 1] < depths[i]:
 			incs += 1
-		prev = i
 	return incs
+	# one liner solution
+	# return tuple((depths[i - 1] < depths[i]) for i in range(1, len(depths))).count(True)
 
 
 def _part2(depths: Sequence[T]) -> T:
