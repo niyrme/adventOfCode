@@ -1,5 +1,6 @@
 from typing import Callable
 from typing import Sequence
+from typing import Type
 from typing import TypeVar
 
 import pytest
@@ -24,23 +25,18 @@ def _part2(depths: Sequence[T]) -> T:
 
 	return _part1(sums)
 	# one liner solution
-	# return _part1(sum((depths[i], depths[i+1], depths[i+2])) for i in range(len(depths)-2))
+	# return _part1(sum((depths[i], depths[i + 1], depths[i + 2])) for i in range(len(depths) - 2))
 
 
-def solve(inp: Sequence[T], part: int):
-	linesInt: list[int] = []
-	for line in inp:
-		linesInt.append(int(line))
-	return (_part1, _part2)[part - 1](linesInt)
-	# one liner solution
-	# return (_part1, _part2)[part - 1]((int(line) for line in inp))
+def solve(inp: Sequence[T], part: int, typ: Type):
+	return (_part1, _part2)[part - 1](tuple(typ(line) for line in inp))
 
 
 def main() -> int:
 	with open("./input.txt") as inpF:
 		inp = inpF.read().strip().splitlines()
-		print(solve(inp, 1))
-		print(solve(inp, 2))
+		print(solve(inp, 1, int))
+		print(solve(inp, 2, int))
 	return 0
 
 
@@ -50,13 +46,13 @@ def main() -> int:
 			(199, 200, 208, 210, 200, 207, 240, 269, 260, 263),
 			7,
 			_part1,
-			id="1 | 1"
+			id="1 | 1",
 		),
 		pytest.param(
 			(199, 200, 208, 210, 200, 207, 240, 269, 260, 263),
 			5,
 			_part2,
-			id="2 | 1"
+			id="2 | 1",
 		),
 	),
 )
