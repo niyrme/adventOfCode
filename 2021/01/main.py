@@ -20,10 +20,11 @@ def _part1(depths: Sequence[T]) -> T:
 def _part2(depths: Sequence[T]) -> T:
 	sums: list[int] = []
 	for i in range(len(depths) - 2):
-		x = (depths[i], depths[i + 1], depths[i + 2])
-		sums.append(sum(x))
+		sums.append(sum((depths[i], depths[i + 1], depths[i + 2])))
 
 	return _part1(sums)
+	# one liner solution
+	# return _part1(sum((depths[i], depths[i+1], depths[i+2])) for i in range(len(depths)-2))
 
 
 def solve(inp: Sequence[T], part: int):
@@ -31,18 +32,20 @@ def solve(inp: Sequence[T], part: int):
 	for line in inp:
 		linesInt.append(int(line))
 	return (_part1, _part2)[part - 1](linesInt)
+	# one liner solution
+	# return (_part1, _part2)[part - 1]((int(line) for line in inp))
 
 
 def main() -> int:
-	with open("./input.txt") as inp:
-		x = inp.read().strip().splitlines()
-		print(solve(x, 1))
-		print(solve(x, 2))
+	with open("./input.txt") as inpF:
+		inp = inpF.read().strip().splitlines()
+		print(solve(inp, 1))
+		print(solve(inp, 2))
 	return 0
 
 
 @pytest.mark.parametrize(
-	("inp", "expected", "fn"), (
+	("inp", "expected", "func"), (
 		pytest.param(
 			(199, 200, 208, 210, 200, 207, 240, 269, 260, 263),
 			7,
@@ -57,8 +60,8 @@ def main() -> int:
 		),
 	),
 )
-def test(inp: Sequence, expected, fn: Callable[[Sequence[T]], T]):
-	assert fn(inp) == expected
+def test(inp: Sequence, expected, func: Callable[[Sequence[T]], T]):
+	assert func(inp) == expected
 
 
 if __name__ == "__main__":
