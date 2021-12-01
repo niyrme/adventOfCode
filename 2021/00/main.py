@@ -17,10 +17,7 @@ def _part2(inp: Sequence[T]) -> T:
 
 
 def solve(inp: Sequence[T], part: int, typ: Type):
-	lns: list[typ] = []
-	for line in inp:
-		lns.append(typ(line))
-	return (_part1, _part2)[part - 1](lns)
+	return (_part1, _part2)[part - 1]((typ(line) for line in inp))
 
 
 def main() -> int:
@@ -32,7 +29,7 @@ def main() -> int:
 
 
 @pytest.mark.parametrize(
-	("inp", "expected", "fn"), (
+	("inp", "expected", "func"), (
 		pytest.param(
 			(),
 			0,
@@ -47,8 +44,8 @@ def main() -> int:
 		),
 	),
 )
-def test(inp: Sequence, expected, fn: Callable[[Sequence[T]], T]):
-	assert fn(inp) == expected
+def test(inp: Sequence, expected: T, func: Callable[[Sequence[T]], T]):
+	assert func(inp) == expected
 
 
 if __name__ == "__main__":
