@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 
+import os
 from typing import Callable
 from typing import Sequence
 from typing import Type
@@ -38,7 +39,8 @@ def main() -> int:
 	ret: pytest.ExitCode = pytest.main([__file__, "--no-header", "--no-summary"])
 	if ret != pytest.ExitCode.OK:
 		return int(ret)
-	with open("./input.txt") as inpF:
+	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
+	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
 		print(f"Part 1: {solve(inp, 1, int)}")
 		print(f"Part 2: {solve(inp, 2, int)}")
