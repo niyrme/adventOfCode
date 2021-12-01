@@ -23,8 +23,8 @@ def solve(inp: Sequence[T], part: int, typ: Type):
 def main() -> int:
 	with open("./input.txt") as inpF:
 		inp = inpF.read().strip().splitlines()
-		print(solve(inp, 1, int))
-		print(solve(inp, 2, int))
+		print(solve(inp, 1, T))
+		print(solve(inp, 2, T))
 	return 0
 
 
