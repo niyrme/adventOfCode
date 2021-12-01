@@ -1,3 +1,5 @@
+[![pre-commit.ci status](https://results.pre-commit.ci/badge/github/niyrme/adventOfCode/main.svg)](https://results.pre-commit.ci/latest/github/niyrme/adventOfCode/main)
+
 # AdventOfCode
 My solutions of [AdventOfCode]
 
