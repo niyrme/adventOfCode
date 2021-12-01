@@ -35,13 +35,13 @@ def solve(inp: Sequence[T], part: int, typ: Type):
 
 
 def main() -> int:
-	ret: pytest.ExitCode = pytest.main([__file__, "-v", "--no-header", "--no-summary"])
+	ret: pytest.ExitCode = pytest.main([__file__, "--no-header", "--no-summary"])
 	if ret != pytest.ExitCode.OK:
 		return int(ret)
 	with open("./input.txt") as inpF:
 		inp = inpF.read().strip().splitlines()
-		print(solve(inp, 1, int))
-		print(solve(inp, 2, int))
+		print(f"Part 1: {solve(inp, 1, int)}")
+		print(f"Part 2: {solve(inp, 2, int)}")
 	return 0
 
 
