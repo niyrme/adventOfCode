@@ -6,7 +6,7 @@ from typing import Sequence
 
 
 def addDay(year: int, day: int) -> None:
-	day = str(day).rjust(2, '0')
+	day = str(day).rjust(2, "0")
 
 	print(f"Adding {year}/{day}")
 
@@ -43,14 +43,10 @@ def main(args: Sequence[str] = None) -> int:
 
 	parsedArgs = argparser.parse_args(args)
 
-	if parsedArgs.year:
+	if parsedArgs.year is not None:
 		year = parsedArgs.year
 	else:
 		newest = 0
-		if str(parsedArgs.year) not in os.listdir("."):
-			# year does not exist
-			os.makedirs(f"./{parsedArgs.year}/00")
-			return 0
 		for _year in os.listdir("."):
 			if not os.path.isdir(_year):
 				continue
@@ -64,7 +60,15 @@ def main(args: Sequence[str] = None) -> int:
 					newest = y
 		year = newest
 
-	if parsedArgs.day:
+	if str(year) not in os.listdir("."):
+		# year does not exist
+		# create with template dir
+		os.makedirs(f"./{year}/00", exist_ok=True)
+		open(f"./{year}/00/input.txt", "w+").close()
+		print(f"year {year} does not exist.. created with template directory.")
+		return 0
+
+	if parsedArgs.day is not None:
 		day = parsedArgs.day
 	else:
 		newest = -1
