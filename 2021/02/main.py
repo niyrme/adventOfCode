@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Callable
 from typing import Literal
 from typing import Sequence
-from typing import Type
-from typing import TypeVar
 
 import pytest
 
-T = TypeVar("T")
+T = str
 
 
-def _part1(inp: Sequence[T]) -> T:
+def _part1(inp: Sequence[T]) -> int:
 	x = 0
 	depth = 0
 
@@ -28,7 +25,7 @@ def _part1(inp: Sequence[T]) -> T:
 	return x * depth
 
 
-def _part2(inp: Sequence[T]) -> T:
+def _part2(inp: Sequence[T]) -> int:
 	x = 0
 	depth = 0
 	aim = 0
@@ -46,8 +43,8 @@ def _part2(inp: Sequence[T]) -> T:
 	return x * depth
 
 
-def solve(inp: Sequence[T], part: Literal[1, 2], typ: Type):
-	return (_part1, _part2)[part - 1](tuple(typ(line) for line in inp))
+def solve(inp: Sequence[T], part: Literal[1, 2]) -> int:
+	return (_part1, _part2)[part - 1](tuple(T(line) for line in inp))
 
 
 def main() -> int:
@@ -57,19 +54,19 @@ def main() -> int:
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
-		print(f"Part 1: {solve(inp, 1, str)}")
-		print(f"Part 2: {solve(inp, 2, str)}")
+		print(f"Part 1: {solve(inp, 1)}")
+		print(f"Part 2: {solve(inp, 2)}")
 	return 0
 
 
 @pytest.mark.parametrize(
-	("inp", "expected", "func"), (
-		pytest.param(("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"), 150, _part1, id="1 | 1"),
-		pytest.param(("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"), 900, _part2, id="2 | 1"),
+	("inp", "expected", "part"), (
+		pytest.param(("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"), 150, 1, id="1 | 1"),
+		pytest.param(("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"), 900, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: T, func: Callable[[Sequence[T]], T]):
-	assert func(inp) == expected
+def test(inp: Sequence, expected: T, part: Literal[1, 2]):
+	assert solve(inp, part) == expected
 
 
 if __name__ == "__main__":

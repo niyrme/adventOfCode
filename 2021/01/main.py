@@ -1,18 +1,15 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Callable
 from typing import Literal
 from typing import Sequence
-from typing import Type
-from typing import TypeVar
 
 import pytest
 
-T = TypeVar("T")
+T = int
 
 
-def _part1(depths: Sequence[T]) -> T:
+def _part1(depths: Sequence[T]) -> int:
 	incs = 0
 	for i in range(1, len(depths)):
 		if depths[i - 1] < depths[i]:
@@ -22,7 +19,7 @@ def _part1(depths: Sequence[T]) -> T:
 	# return tuple((depths[i - 1] < depths[i]) for i in range(1, len(depths))).count(True)
 
 
-def _part2(depths: Sequence[T]) -> T:
+def _part2(depths: Sequence[T]) -> int:
 	sums: list[int] = []
 	for i in range(len(depths) - 2):
 		sums.append(sum((depths[i], depths[i + 1], depths[i + 2])))
@@ -32,8 +29,8 @@ def _part2(depths: Sequence[T]) -> T:
 	# return _part1(sum((depths[i], depths[i + 1], depths[i + 2])) for i in range(len(depths) - 2))
 
 
-def solve(inp: Sequence[T], part: Literal[1, 2], typ: Type):
-	return (_part1, _part2)[part - 1](tuple(typ(line) for line in inp))
+def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
+	return (_part1, _part2)[part - 1](tuple(T(line) for line in inp))
 
 
 def main() -> int:
@@ -43,19 +40,19 @@ def main() -> int:
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
-		print(f"Part 1: {solve(inp, 1, int)}")
-		print(f"Part 2: {solve(inp, 2, int)}")
+		print(f"Part 1: {solve(inp, 1)}")
+		print(f"Part 2: {solve(inp, 2)}")
 	return 0
 
 
 @pytest.mark.parametrize(
-	("inp", "expected", "func"), (
-		pytest.param((199, 200, 208, 210, 200, 207, 240, 269, 260, 263), 7, _part1, id="1 | 1"),
-		pytest.param((199, 200, 208, 210, 200, 207, 240, 269, 260, 263), 5, _part2, id="2 | 1"),
+	("inp", "expected", "part"), (
+		pytest.param((199, 200, 208, 210, 200, 207, 240, 269, 260, 263), 7, 1, id="1 | 1"),
+		pytest.param((199, 200, 208, 210, 200, 207, 240, 269, 260, 263), 5, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected, func: Callable[[Sequence[T]], T]):
-	assert func(inp) == expected
+def test(inp: Sequence, expected: T, part: Literal[1, 2]):
+	assert solve(inp, part) == expected
 
 
 if __name__ == "__main__":

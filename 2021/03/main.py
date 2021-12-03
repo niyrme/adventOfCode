@@ -1,35 +1,32 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Callable
 from typing import Literal
 from typing import Sequence
-from typing import Type
-from typing import TypeVar
 from typing import Union
 
 import pytest
 
-T = TypeVar("T")
+T = str
 
 
-def _part1(inp: Sequence[T]) -> T:
+def _part1(inp: Sequence[T]) -> int:
 	newInp = []
 
 	for x in list(zip(*inp)):
 		newInp.append("".join(x))
 
-	c = ""
+	bitString = ""
 	for x in newInp:
-		c += {
+		bitString += {
 			True: "0",
 			False: "1",
 		}[str(x).count("0") > str(x).count("1")]
 
-	return int(c, 2) * int("".join("1" if x == "0" else "0" for x in c), 2)
+	return int(bitString, 2) * int("".join("1" if x == "0" else "0" for x in bitString), 2)
 
 
-def mostCommon(bitStrings: Sequence[str], pos: int, default: int) -> Union[Literal[0, 1], None]:
+def mostCommon(bitStrings: Sequence[str], pos: int) -> Union[Literal[0, 1], None]:
 	bitRow = "".join(list(zip(*bitStrings))[pos])
 
 	count0 = bitRow.count("0")
@@ -43,15 +40,17 @@ def mostCommon(bitStrings: Sequence[str], pos: int, default: int) -> Union[Liter
 		return None
 
 
-def filterBits(bitStrings: Sequence[str], n: int, expected: int) -> Sequence[str]:
-	filtered = []
-	for bitString in bitStrings:
-		if bitString[n] == str(expected):
-			filtered.append(bitString)
-	return filtered
+def filterBits(bitStrings: Sequence[str], pos: int, expected: int) -> Sequence[str]:
+	filtered = {bitString if bitString[pos] == str(expected) else None for bitString in bitStrings}
+	try:
+		filtered.remove(None)
+	except KeyError:
+		pass
+	finally:
+		return filtered
 
 
-def _part2(inp: Sequence[T]) -> T:
+def _part2(inp: Sequence[T]) -> int:
 	bits0 = filterBits(inp, 0, 0)
 	bits1 = filterBits(inp, 0, 1)
 
@@ -59,18 +58,18 @@ def _part2(inp: Sequence[T]) -> T:
 		oxygen = bits0
 		co2 = bits1
 	elif len(bits0) < len(bits1):
-		co2 = bits0
 		oxygen = bits1
+		co2 = bits0
 	else:
-		co2 = bits0
 		oxygen = bits1
+		co2 = bits0
 
 	for i in range(1, len(inp[0])):
 		# no need to filter if only one element
 		if len(oxygen) > 1:
-			oxygen = filterBits(oxygen, i, {None: 1, 0: 0, 1: 1}[mostCommon(oxygen, i, 1)])
+			oxygen = filterBits(oxygen, i, {None: 1, 0: 0, 1: 1}[mostCommon(oxygen, i)])
 		if len(co2) > 1:
-			co2 = filterBits(co2, i, {None: 0, 0: 1, 1: 0}[mostCommon(co2, i, 0)])
+			co2 = filterBits(co2, i, {None: 0, 0: 1, 1: 0}[mostCommon(co2, i)])
 
 	oxygenS = "".join(oxygen)
 	co2S = "".join(co2)
@@ -78,8 +77,8 @@ def _part2(inp: Sequence[T]) -> T:
 	return int(oxygenS, 2) * int(co2S, 2)
 
 
-def solve(inp: Sequence[T], part: Literal[1, 2], typ: Type):
-	return (_part1, _part2)[part - 1](tuple(typ(line) for line in inp))
+def solve(inp: Sequence[T], part: Literal[1, 2]) -> int:
+	return (_part1, _part2)[part - 1](tuple(T(line) for line in inp))
 
 
 def main() -> int:
@@ -89,20 +88,19 @@ def main() -> int:
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
-		inpType = str
-		print(f"Part 1: {solve(inp, 1, inpType)}")
-		print(f"Part 2: {solve(inp, 2, inpType)}")
+		print(f"Part 1: {solve(inp, 1)}")
+		print(f"Part 2: {solve(inp, 2)}")
 	return 0
 
+
 @pytest.mark.parametrize(
-	("inp", "expected", "func"), (
-		pytest.param(("00100","11110","10110","10111","10101","01111","00111","11100","10000","11001","00010","01010"), 198, _part1, id="1 | 1"),
-		pytest.param(("00100","11110","10110","10111","10101","01111","00111","11100","10000","11001","00010","01010"), 230, _part2, id="2 | 1"),
+	("inp", "expected", "part"), (
+		pytest.param(("00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"), 198, 1, id="1 | 1"),
+		pytest.param(("00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"), 230, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: T, func: Callable[[Sequence[T]], T]):
-	assert func(inp) == expected
-	# assert False
+def test(inp: Sequence, expected: T, part: Literal[1, 2]):
+	assert solve(inp, part) == expected
 
 
 if __name__ == "__main__":
