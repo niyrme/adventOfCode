@@ -20,7 +20,7 @@ def _part2(inp: Sequence[T]) -> T:
 	...
 
 
-def solve(inp: Sequence[T], part: Literal[1, 2], typ: Type):
+def solve(inp: Sequence[str], part: Literal[1, 2], typ: Type):
 	return (_part1, _part2)[part - 1](tuple(typ(line) for line in inp))
 
 
