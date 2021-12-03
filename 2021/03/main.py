@@ -68,17 +68,9 @@ def _part2(inp: Sequence[T]) -> T:
 	for i in range(1, len(inp[0])):
 		# no need to filter if only one element
 		if len(oxygen) > 1:
-			oxygen = filterBits(oxygen, i, {
-				None: 1,
-				0: 0,
-				1: 1,
-			}[mostCommon(oxygen, i, 1)])
+			oxygen = filterBits(oxygen, i, {None: 1, 0: 0, 1: 1}[mostCommon(oxygen, i, 1)])
 		if len(co2) > 1:
-			co2 = filterBits(co2, i, {
-				None: 0,
-				0: 1,
-				1: 0,
-			}[mostCommon(co2, i, 0)])
+			co2 = filterBits(co2, i, {None: 0, 0: 1, 1: 0}[mostCommon(co2, i, 0)])
 
 	oxygenS = "".join(oxygen)
 	co2S = "".join(co2)
@@ -98,8 +90,8 @@ def main() -> int:
 	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
 		inpType = str
-		print(f"Part 1: {solve(inp, 1, inpType)}")  # 2972336
-		print(f"Part 2: {solve(inp, 2, inpType)}")  # 3368358
+		print(f"Part 1: {solve(inp, 1, inpType)}")
+		print(f"Part 2: {solve(inp, 2, inpType)}")
 	return 0
 
 @pytest.mark.parametrize(
