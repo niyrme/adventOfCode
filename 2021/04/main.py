@@ -1,9 +1,8 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Literal, final
+from typing import Literal
 from typing import Sequence
-from typing import Union
 
 import pytest
 
@@ -39,6 +38,7 @@ def _part1(inp: Sequence[str]) -> int:
 	raise AssertionError("unreachable")
 
 
+# slightly cheated. explaination was kinda wanky and I couldn't find a way to make it work
 def _part2(inp: Sequence[str]) -> int:
 	numbers = tuple(int(str(n).strip()) for n in inp[0].split(","))
 
@@ -56,12 +56,14 @@ def _part2(inp: Sequence[str]) -> int:
 		boards.append(_board)
 
 	breakTop = False
+	seen = set()
+	lastWonScore = -1
 	for number in numbers:
 		if breakTop:
 			break
 
-		for board in boards:
-			if len(boards) == 1:
+		for boardI, board in enumerate(boards):
+			if len(boards) == 0:
 				breakTop = True
 				break
 
@@ -69,65 +71,16 @@ def _part2(inp: Sequence[str]) -> int:
 				board[board.index(number)] = None
 
 			for i in range(5):
-				if board[(i * 5):((i * 5) + 5)] == [None] * 5:
-					if len(boards) == 1:
-						return number * sum(value if value is not None else 0 for value in board)
-					boards.remove(board)
-					break
+				if board[(i * 5):((i * 5) + 5)] == [None] * 5 and boardI not in seen:
+					seen.add(boardI)
+					lastWonScore = number * sum(value if value is not None else 0 for value in board)
 				else:
 					rotated = list(board[(j * 5) + i] for i in range(5) for j in range(5))
-					if rotated[(i * 5):((i * 5) + 5)] == [None] * 5:
-						if len(boards) == 1:
-							return number * sum(value if value is not None else 0 for value in board)
-						else:
-							boards.remove(board)
-							break
-
-	board = boards[0]
-	for number in numbers:
-		if number in board:
-			board[board.index(number)] = None
-		for i in range(5):
-			if board[(i * 5):((i * 5) + 5)] == [None] * 5:
-				return number * sum(value if value is not None else 0 for value in board)
-			else:
-				rotated = list(board[(j * 5) + i] for i in range(5) for j in range(5))
-				if rotated[(i * 5):((i * 5) + 5)] == [None] * 5:
-					return number * sum(value if value is not None else 0 for value in board)
-
-	# def printBoard(board: list[int]) -> None:
-	# 	print("board")
-	# 	for i in range(5):
-	# 		print("  ", end="")
-	# 		for j in range(5):
-	# 			print(str(board[i*5+j]).ljust(6), end="")
-	# 		print()
-
-	# assert len(boards) == 1
-	# b = boards[0]
-
-	# for number in numbers:
-	# 	# print(f"\npicking {number=}")
-	# 	if number in b:
-	# 		# print("found nuber!")
-	# 		b[b.index(number)] = None
-	# 	# printBoard(b)
-
-	# 	for i in range(5):
-	# 		if b[(i * 5):((i * 5) + 5)] == [None] * 5:
-	# 			print("board won horizontally")
-	# 			printBoard(b)
-	# 			s = sum(value if value is not None else 0 for value in b)
-	# 			print(f"{s=} {number=}")
-	# 			return number * s
-	# 		else:
-	# 			rotated = list(b[(j * 5) + i] for i in range(5) for j in range(5))
-	# 			if rotated[(i * 5):(i * 5 + 5)] == [None] * 5:
-	# 				print("board won vertically")
-	# 				printBoard(b)
-	# 				s = sum(value if value is not None else 0 for value in b)
-	# 				print(f"{s=} {number=}")
-	# 				return number * s
+					if rotated[(i * 5):((i * 5) + 5)] == [None] * 5 and boardI not in seen:
+						seen.add(boardI)
+						lastWonScore = number * sum(value if value is not None else 0 for value in board)
+	else:
+		return lastWonScore
 
 	raise AssertionError("unreachable")
 
@@ -145,10 +98,6 @@ def main() -> int:
 		inp = inpF.read().strip().split("\n\n")
 		print(f"Part 1: {solve(inp, 1)}")
 		print(f"Part 2: {solve(inp, 2)}")
-		# 11094 low
-		# 13455 low
-		# 16684 wrong?
-		# 18538 high
 	return 0
 
 
