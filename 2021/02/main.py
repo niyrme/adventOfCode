@@ -6,10 +6,8 @@ from typing import Sequence
 
 import pytest
 
-T = str
 
-
-def _part1(inp: Sequence[T]) -> int:
+def _part1(inp: Sequence[str]) -> int:
 	x = 0
 	depth = 0
 
@@ -25,7 +23,7 @@ def _part1(inp: Sequence[T]) -> int:
 	return x * depth
 
 
-def _part2(inp: Sequence[T]) -> int:
+def _part2(inp: Sequence[str]) -> int:
 	x = 0
 	depth = 0
 	aim = 0
@@ -43,8 +41,8 @@ def _part2(inp: Sequence[T]) -> int:
 	return x * depth
 
 
-def solve(inp: Sequence[T], part: Literal[1, 2]) -> int:
-	return (_part1, _part2)[part - 1](tuple(T(line) for line in inp))
+def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
+	return (_part1, _part2)[part - 1](tuple(str(line) for line in inp))
 
 
 def main() -> int:
@@ -59,13 +57,14 @@ def main() -> int:
 	return 0
 
 
+EXAMPLE_INPUT = ("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2")
 @pytest.mark.parametrize(
 	("inp", "expected", "part"), (
-		pytest.param(("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"), 150, 1, id="1 | 1"),
-		pytest.param(("forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"), 900, 2, id="2 | 1"),
+		pytest.param(EXAMPLE_INPUT, 150, 1, id="1 | 1"),
+		pytest.param(EXAMPLE_INPUT, 900, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: T, part: Literal[1, 2]):
+def test(inp: Sequence, expected: str, part: Literal[1, 2]):
 	assert solve(inp, part) == expected
 
 

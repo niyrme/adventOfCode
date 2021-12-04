@@ -34,10 +34,11 @@ def main() -> int:
 	return 0
 
 
+EXAMPLE_INPUT = ()
 @pytest.mark.parametrize(
 	("inp", "expected", "part"), (
-		pytest.param((), 0, 1, id="1 | 1"),
-		pytest.param((), 0, 2, id="2 | 1"),
+		pytest.param(EXAMPLE_INPUT, 0, 1, id="1 | 1"),
+		pytest.param(EXAMPLE_INPUT, 0, 2, id="2 | 1"),
 	),
 )
 def test(inp: Sequence, expected: T, part: Literal[1, 2]):
