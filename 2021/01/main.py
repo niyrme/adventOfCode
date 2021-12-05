@@ -7,14 +7,17 @@ from typing import Sequence
 import pytest
 
 
+_part1L = lambda depths: tuple((depths[i - 1] < depths[i]) for i in range(1, len(depths))).count(True)
+_part2L = lambda depths: _part1L(tuple(sum(depths[i:(i + 3)]) for i in range(len(depths) - 2)))
+solveL = lambda inp, part: (_part1L, _part2L)[part - 1](tuple(int(line) for line in inp))
+
+
 def _part1(depths: Sequence[int]) -> int:
 	incs = 0
 	for i in range(1, len(depths)):
 		if depths[i - 1] < depths[i]:
 			incs += 1
 	return incs
-	# one liner solution
-	# return tuple((depths[i - 1] < depths[i]) for i in range(1, len(depths))).count(True)
 
 
 def _part2(depths: Sequence[int]) -> int:
@@ -23,8 +26,6 @@ def _part2(depths: Sequence[int]) -> int:
 		sums.append(sum((depths[i], depths[i + 1], depths[i + 2])))
 
 	return _part1(sums)
-	# one liner solution
-	# return _part1(sum((depths[i], depths[i + 1], depths[i + 2])) for i in range(len(depths) - 2))
 
 
 def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
@@ -40,6 +41,9 @@ def main() -> int:
 		inp = inpF.read().strip().splitlines()
 		print(f"Part 1: {solve(inp, 1)}")
 		print(f"Part 2: {solve(inp, 2)}")
+		print("One-liner solutions")
+		print(f"Part 1: {solveL(inp, 1)}")
+		print(f"Part 2: {solveL(inp, 2)}")
 	return 0
 
 
