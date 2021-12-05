@@ -1,80 +1,52 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
 import os
+from collections import defaultdict
 from typing import Literal
 from typing import Sequence
 
 import pytest
 
-T = str
 
-
-def _part1(inp: Sequence[T]) -> int:
+def _part1(inp: Sequence[str]) -> int:
 	board = defaultdict(int)
 	for line in inp:
 		frm, to = line.strip().split("->")
-		_x1, _y1 = frm.split(",")
-		_x2, _y2 = to.split(",")
-
-		x1 = int(_x1.strip())
-		x2 = int(_x2.strip())
-		y1 = int(_y1.strip())
-		y2 = int(_y2.strip())
-
-		x1, x2 = min(x1, x2), max(x1, x2)
-		y1, y2 = min(y1, y2), max(y1, y2)
+		x1, y1 = (int(d) for d in frm.split(","))
+		x2, y2 = (int(d) for d in to.split(","))
 
 		if x1 == x2:
-			for y in range(y1, y2 + 1):
+			for y in range(min(y1, y2), max(y1, y2) + 1):
 				board[(x1, y)] += 1
 		elif y1 == y2:
-			for x in range(x1, x2 + 1):
+			for x in range(min(x1, x2), max(x1, x2) + 1):
 				board[(x, y1)] += 1
 
 	return sum([1 if x > 1 else 0 for x in board.values()])
 
 
-def _part2(inp: Sequence[T]) -> int:
+def _part2(inp: Sequence[str]) -> int:
+	cmp = lambda a, b: int(a < b) - int(a > b)
+
 	board = defaultdict(int)
 	for line in inp:
 		frm, to = line.strip().split("->")
-		_x1, _y1 = frm.split(",")
-		_x2, _y2 = to.split(",")
+		x1, y1 = (int(d) for d in frm.split(","))
+		x2, y2 = (int(d) for d in to.split(","))
 
-		x1 = int(_x1.strip())
-		x2 = int(_x2.strip())
-		y1 = int(_y1.strip())
-		y2 = int(_y2.strip())
-
-		# print(f"\n{line=}")
-		if x1 == x2:
-			# print(f"  Horizontal: x={x1}: {y1} -> {y2}")
-			for y in range(min(y1, y2), max(y1, y2) + 1):
-				# print(f"    adding {(x1, y)}")
-				board[(x1, y)] += 1
-		elif y1 == y2:
-			# print(f"  Vertical:   x={y1}: {x1} -> {x2}")
-			for x in range(min(x1, x2), max(x1, x2) + 1):
-				# print(f"    adding {(x, y1)}")
-				board[(x, y1)] += 1
-		# from (x1, y1)
-		# to   (x2, y2)
-		else:
-			# print(f"  Diagonal:   {(x1, y1)} -> {(x2, y2)}")
-			pos = (x1, y1)
-			while pos != (x2, y2):
-				board[pos] += 1
-				horizontalChange = {True: 1, False: -1}[x1 < x2]
-				verticalChange = {True: 1, False: -1}[y1 < y2]
-				pos = (pos[0]+horizontalChange, pos[1]+verticalChange)
+		pos = (x1, y1)
+		horizontalChange = cmp(x1, x2)
+		verticalChange = cmp(y1, y2)
+		while pos != (x2, y2):
 			board[pos] += 1
+			pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
+		board[pos] += 1
 
 	return sum([1 if x > 1 else 0 for x in board.values()])
 
 
 def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
-	return (_part1, _part2)[part - 1](tuple(T(line) for line in inp))
+	return (_part1, _part2)[part - 1](tuple(str(line) for line in inp))
 
 
 def main() -> int:
@@ -99,15 +71,14 @@ EXAMPLE_INPUT = """
 0,9 -> 2,9
 3,4 -> 1,4
 0,0 -> 8,8
-5,5 -> 8,2
-""".strip().splitlines()
+5,5 -> 8,2""".strip().splitlines()
 @pytest.mark.parametrize(
 	("inp", "expected", "part"), (
 		pytest.param(EXAMPLE_INPUT, 5, 1, id="1 | 1"),
 		pytest.param(EXAMPLE_INPUT, 12, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: T, part: Literal[1, 2]):
+def test(inp: Sequence, expected: str, part: Literal[1, 2]):
 	assert solve(inp, part) == expected
 
 
