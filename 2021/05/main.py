@@ -2,6 +2,7 @@
 
 import os
 from collections import defaultdict
+from typing import Callable
 from typing import Literal
 from typing import Sequence
 
@@ -25,7 +26,7 @@ def _part1(inp: Sequence[str]) -> int:
 
 
 def _part2(inp: Sequence[str]) -> int:
-	cmp = lambda a, b: int(a < b) - int(a > b)
+	cmp: Callable[[int, int], int] = lambda a, b: int(a < b) - int(a > b)
 
 	board = defaultdict(int)
 	for line in inp:
