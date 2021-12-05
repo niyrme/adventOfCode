@@ -17,9 +17,7 @@ def _part1(inp: Sequence[str]) -> int:
 		for line in board.strip().splitlines():
 			line = line.strip()
 			for num in line.split(" "):
-				if num == "":
-					continue
-				else:
+				if num != "":
 					_board.append(int(num.strip()))
 		boards.add(_board)
 
@@ -49,9 +47,7 @@ def _part2(inp: Sequence[str]) -> int:
 		for line in board.strip().splitlines():
 			line = line.strip()
 			for num in line.split(" "):
-				if num == "":
-					continue
-				else:
+				if num != "":
 					_board.append(int(num.strip()))
 		boards.add(_board)
 
