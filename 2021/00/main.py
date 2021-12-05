@@ -41,7 +41,7 @@ EXAMPLE_INPUT = ()
 		pytest.param(EXAMPLE_INPUT, 0, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: T, part: Literal[1, 2]):
+def test(inp: Sequence[T], expected: T, part: Literal[1, 2]):
 	assert solve(inp, part) == expected
 
 

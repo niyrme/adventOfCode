@@ -50,7 +50,7 @@ EXAMPLE_INPUT = (199, 200, 208, 210, 200, 207, 240, 269, 260, 263)
 		pytest.param(EXAMPLE_INPUT, 5, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: int, part: Literal[1, 2]):
+def test(inp: Sequence[int], expected: int, part: Literal[1, 2]):
 	assert solve(inp, part) == expected
 
 

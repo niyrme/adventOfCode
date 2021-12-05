@@ -129,7 +129,7 @@ EXAMPLE_INPUT = """
 		pytest.param(EXAMPLE_INPUT, 1924, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: str, part: Literal[1, 2]):
+def test(inp: Sequence[str], expected: str, part: Literal[1, 2]):
 	assert solve(inp, part) == expected
 
 

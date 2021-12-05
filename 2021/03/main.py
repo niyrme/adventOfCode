@@ -98,7 +98,7 @@ EXAMPLE_INPUT = ("00100", "11110", "10110", "10111", "10101", "01111", "00111", 
 		pytest.param(EXAMPLE_INPUT, 230, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence, expected: str, part: Literal[1, 2]):
+def test(inp: Sequence[str], expected: str, part: Literal[1, 2]):
 	assert solve(inp, part) == expected
 
 
