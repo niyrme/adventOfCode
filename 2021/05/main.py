@@ -47,43 +47,28 @@ def _part2(inp: Sequence[T]) -> int:
 		y1 = int(_y1.strip())
 		y2 = int(_y2.strip())
 
-		# from (x1, y1)
-		# to   (x2, y2)
-
-		print(f"\n{line=}")
-		if x1 == y1 and x2 == y2:
-			print(f"  Diagonal 1: {(x1, y1)} -> {(x2, y2)}")
-			for xy in range(x1, x2):
-				print(f"    adding {(xy, xy)}")
-				board[(xy, xy)] += 1
-		elif x1 == y2 and y1 == x2:
-			print(f"  Diagonal 2: {(x1, x2)} -> {(y1, y2)}")
-			new = (x1, y1)
-			while new != (x2, y2):
-				board[new] += 1
-				print(f"    adding {new}")
-				if x1 > x2:
-					new = (new[0] - 1, new[1] + 1)
-				else:
-					new = (new[0] + 1, new[1] - 1)
-			board[new] += 1
-			print(f"    adding {new}")
-		elif x1 == x2:
-			print(f"  Vertical:   y={x1}: {y1} -> {y2}")
+		# print(f"\n{line=}")
+		if x1 == x2:
+			# print(f"  Horizontal: x={x1}: {y1} -> {y2}")
 			for y in range(min(y1, y2), max(y1, y2) + 1):
-				print(f"    adding {(x1, y)}")
+				# print(f"    adding {(x1, y)}")
 				board[(x1, y)] += 1
 		elif y1 == y2:
-			print(f"  Horizontal: x={y1}: {x1} -> {x2}")
+			# print(f"  Vertical:   x={y1}: {x1} -> {x2}")
 			for x in range(min(x1, x2), max(x1, x2) + 1):
-				print(f"    adding {(x, y1)}")
+				# print(f"    adding {(x, y1)}")
 				board[(x, y1)] += 1
-
-	# print()
-	# from pprint import pp
-	# pp(board)
-	for k in sorted(board.keys()):
-		print(f"{k=} v={board[k]}")
+		# from (x1, y1)
+		# to   (x2, y2)
+		else:
+			# print(f"  Diagonal:   {(x1, y1)} -> {(x2, y2)}")
+			pos = (x1, y1)
+			while pos != (x2, y2):
+				board[pos] += 1
+				horizontalChange = {True: 1, False: -1}[x1 < x2]
+				verticalChange = {True: 1, False: -1}[y1 < y2]
+				pos = (pos[0]+horizontalChange, pos[1]+verticalChange)
+			board[pos] += 1
 
 	return sum([1 if x > 1 else 0 for x in board.values()])
 
@@ -93,7 +78,7 @@ def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
 
 
 def main() -> int:
-	ret = pytest.main([__file__, "--no-header"])
+	ret = pytest.main([__file__, "--no-header", "-s"])
 	if ret != pytest.ExitCode.OK:
 		return ret
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
