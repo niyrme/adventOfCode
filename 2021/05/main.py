@@ -21,8 +21,7 @@ def _part1(inp: Sequence[str]) -> int:
 		elif y1 == y2:
 			for x in range(min(x1, x2), max(x1, x2) + 1):
 				board[(x, y1)] += 1
-
-	return sum([1 if x > 1 else 0 for x in board.values()])
+	return sum(x > 1 for x in board.values())
 
 
 def _part2(inp: Sequence[str]) -> int:
@@ -42,7 +41,7 @@ def _part2(inp: Sequence[str]) -> int:
 			pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
 		board[pos] += 1
 
-	return sum([1 if x > 1 else 0 for x in board.values()])
+	return sum(x > 1 for x in board.values())
 
 
 def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
