@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
 import os
-from collections import defaultdict
+from collections import Counter
 from typing import Callable
 from typing import Literal
 from typing import Sequence
@@ -9,26 +9,29 @@ from typing import Sequence
 import pytest
 
 
+cmp: Callable[[int, int], int] = lambda a, b: int(a < b) - int(a > b)
+
+
 def _part1(inp: Sequence[str]) -> int:
-	board = defaultdict(int)
+	board = Counter()
 	for line in inp:
 		frm, to = line.strip().split("->")
 		x1, y1 = (int(d) for d in frm.split(","))
 		x2, y2 = (int(d) for d in to.split(","))
 
-		if x1 == x2:
-			for y in range(min(y1, y2), max(y1, y2) + 1):
-				board[(x1, y)] += 1
-		elif y1 == y2:
-			for x in range(min(x1, x2), max(x1, x2) + 1):
-				board[(x, y1)] += 1
+		if x1 == x2 or y1 == y2:
+			pos = (x1, y1)
+			horizontalChange = cmp(x1, x2)
+			verticalChange = cmp(y1, y2)
+			while pos != (x2, y2):
+				board[pos] += 1
+				pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
+			board[pos] += 1
 	return sum(x > 1 for x in board.values())
 
 
 def _part2(inp: Sequence[str]) -> int:
-	cmp: Callable[[int, int], int] = lambda a, b: int(a < b) - int(a > b)
-
-	board = defaultdict(int)
+	board = Counter()
 	for line in inp:
 		frm, to = line.strip().split("->")
 		x1, y1 = (int(d) for d in frm.split(","))
