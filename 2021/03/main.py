@@ -63,7 +63,6 @@ def _part2(inp: Sequence[str]) -> int:
 		co2 = bits0
 
 	for i in range(1, len(inp[0])):
-		# no need to filter if only one element
 		if len(oxygen) > 1:
 			oxygen = filterBits(oxygen, i, {None: 1, 0: 0, 1: 1}[mostCommon(oxygen, i)])
 		if len(co2) > 1:
