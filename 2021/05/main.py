@@ -9,6 +9,7 @@ from typing import Sequence
 import pytest
 
 
+# not the actual python 2 cmp, because output is flipped
 cmp: Callable[[int, int], int] = lambda a, b: int(a < b) - int(a > b)
 
 
@@ -40,10 +41,10 @@ def _part2(inp: Sequence[str]) -> int:
 		pos = (x1, y1)
 		horizontalChange = cmp(x1, x2)
 		verticalChange = cmp(y1, y2)
-		while pos != (x2, y2):
+		while pos != (x2 + horizontalChange, y2 + verticalChange):
 			board[pos] += 1
 			pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
-		board[pos] += 1
+		# board[pos] += 1
 
 	return sum(x > 1 for x in board.values())
 
