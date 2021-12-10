@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-from collections import defaultdict
 import os
+from collections import defaultdict
 from math import prod
 from typing import Literal
 from typing import Generator
