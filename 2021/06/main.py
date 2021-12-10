@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 
-import collections
 import os
+from collections import Counter
 from typing import Callable
 from typing import Literal
 from typing import Sequence
@@ -10,10 +10,10 @@ import pytest
 
 
 def getFishCount(inp: Sequence[int], days: int) -> int:
-	fish = collections.Counter(inp)
+	fish = Counter(inp)
 
 	for _ in range(days):
-		_fish = collections.Counter({8: fish[0], 6: fish[0]})
+		_fish = Counter({8: fish[0], 6: fish[0]})
 		_fish.update({k - 1: v for k, v in fish.items() if k > 0})
 		fish = _fish
 
@@ -29,7 +29,7 @@ def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
 
 
 def main() -> int:
-	ret = pytest.main([__file__, "--no-header", "-s"])
+	ret = pytest.main([__file__, "--no-header"])
 	if ret != pytest.ExitCode.OK:
 		return ret
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
