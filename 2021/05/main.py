@@ -24,10 +24,9 @@ def _part1(inp: Sequence[str]) -> int:
 			pos = (x1, y1)
 			horizontalChange = cmp(x1, x2)
 			verticalChange = cmp(y1, y2)
-			while pos != (x2, y2):
+			while pos != (x2 + horizontalChange, y2 + verticalChange):
 				board[pos] += 1
 				pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
-			board[pos] += 1
 	return sum(x > 1 for x in board.values())
 
 
@@ -44,7 +43,6 @@ def _part2(inp: Sequence[str]) -> int:
 		while pos != (x2 + horizontalChange, y2 + verticalChange):
 			board[pos] += 1
 			pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
-		# board[pos] += 1
 
 	return sum(x > 1 for x in board.values())
 
@@ -54,9 +52,10 @@ def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
 
 
 def main() -> int:
-	ret = pytest.main([__file__, "--no-header", "-s"])
+	ret = pytest.main([__file__, "--no-header"])
 	if ret != pytest.ExitCode.OK:
 		return ret
+
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
