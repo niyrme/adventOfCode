@@ -18,24 +18,24 @@ def neighbours(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 
 
 def _part1(inp: Sequence[str]) -> int:
-	coords: dict[tuple[int, int], int] = defaultdict(lambda: 9)
+	coords: dict[tuple[int, int], int] = defaultdict(int)
 	for y, line in enumerate(inp):
 		for x, char in enumerate(line):
 			coords[(x, y)] = int(char)
 
-	return sum((i + 1) * int(all(coords[at] > i for at in neighbours(x, y))) for (x, y), i in tuple(coords.items()))
+	return sum((i + 1) * int(all(coords.get(at, 9) > i for at in neighbours(x, y))) for (x, y), i in coords.items())
 
 
 def _part2(inp: Sequence[str]) -> int:
-	coords: dict[tuple[int, int], int] = defaultdict(lambda: 9)
+	coords: dict[tuple[int, int], int] = defaultdict(int)
 	for y, line in enumerate(inp):
 		for x, char in enumerate(line):
 			coords[(x, y)] = int(char)
 
-	sizes = []
+	top3 = [0, 0, 0]
 
-	for (x, y), i in tuple(coords.items()):
-		if all(coords[at] > i for at in neighbours(x, y)):
+	for (x, y), i in coords.items():
+		if all(coords.get(at, 9) > i for at in neighbours(x, y)):
 			seen = set()
 			todo = [(x, y)]
 			while todo:
@@ -43,12 +43,14 @@ def _part2(inp: Sequence[str]) -> int:
 				seen.add((x, y))
 
 				for other in neighbours(x, y):
-					if other not in seen and coords[other] != 9:
+					if other not in seen and coords.get(other, 9) != 9:
 						todo.append(other)
 
-			sizes.append(len(seen))
+			if len(seen) > min(top3):
+				top3.remove(min(top3))
+				top3.append(len(seen))
 
-	return prod(sorted(sizes)[-3:])
+	return prod(top3)
 
 
 def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
