@@ -10,7 +10,7 @@ import pytest
 def main() -> int:
 	parser = argparse.ArgumentParser()
 	parser.add_argument("day", type=int, help="day to run. must be in range 1-25, runs all if not given")
-	parser.add_argument("-t", "--tests", type=int, default=1, choices=(0, 1), help="skip tests", dest="tests")
+	parser.add_argument("-T", "--skip-tests", action="store_true", help="skip tests", dest="skipTests")
 	args = parser.parse_args()
 
 	if not 0 < args.day < 26:
@@ -24,7 +24,7 @@ def main() -> int:
 		return 1
 
 	print(f"Running {dayStr}")
-	if args.tests == 1:
+	if args.skipTests is False:
 		ret: pytest.ExitCode = pytest.main([f"{dayStr}/main.py", "-q"])
 		if ret != pytest.ExitCode.OK:
 			print(f"{dayStr} failed with exit code {int(ret)}\n", file=sys.stderr)
