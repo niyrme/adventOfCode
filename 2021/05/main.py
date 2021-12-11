@@ -52,10 +52,6 @@ def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
 
 
 def main() -> int:
-	ret = pytest.main([__file__, "--no-header"])
-	if ret != pytest.ExitCode.OK:
-		return ret
-
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
 		inp = inpF.read().strip().splitlines()
