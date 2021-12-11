@@ -10,7 +10,7 @@ import pytest
 def _part1(inp: Sequence[str]) -> int:
 	numbers = tuple(int(str(n).strip()) for n in inp[0].split(","))
 
-	boards: set[list[int]] = set()
+	boards: list[list[int]] = list()
 
 	for board in inp[1:]:
 		_board = []
@@ -19,7 +19,7 @@ def _part1(inp: Sequence[str]) -> int:
 			for num in line.split(" "):
 				if num != "":
 					_board.append(int(num.strip()))
-		boards.add(_board)
+		boards.append(_board)
 
 	for number in numbers:
 		for board in boards:
@@ -40,7 +40,7 @@ def _part1(inp: Sequence[str]) -> int:
 def _part2(inp: Sequence[str]) -> int:
 	numbers = tuple(int(str(n).strip()) for n in inp[0].split(","))
 
-	boards: set[list[int]] = {}
+	boards: list[list[int]] = []
 
 	for board in inp[1:]:
 		_board = []
@@ -49,7 +49,7 @@ def _part2(inp: Sequence[str]) -> int:
 			for num in line.split(" "):
 				if num != "":
 					_board.append(int(num.strip()))
-		boards.add(_board)
+		boards.append(_board)
 
 	breakTop = False
 	seen: set[int] = set()
