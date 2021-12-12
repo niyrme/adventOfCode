@@ -9,12 +9,20 @@ from typing import Sequence
 import pytest
 
 
-_part1: Callable[[int], int] = lambda inp: int(sum(abs(num - statistics.median(inp)) for num in inp))
+# replace with whatever type is needed
+T = int
+parseInput: Callable[[str], Sequence[T]] = lambda inp: tuple(T(line) for line in inp.split(","))
 
 
-def _part2(inp: Sequence[int]) -> int:
-	getN: Callable[[int], int] = lambda n: sum(abs(num - n) * (abs(num - n) + 1) // 2 for num in inp)
-	median = statistics.median(inp)
+def part1(inp: str) -> int:
+	nums = parseInput(inp)
+	return int(sum(abs(num - statistics.median(nums)) for num in nums))
+
+
+def part2(inp: str) -> int:
+	nums = parseInput(inp)
+	getN: Callable[[int], int] = lambda n: sum(abs(num - n) * (abs(num - n) + 1) // 2 for num in nums)
+	median = statistics.median(nums)
 	num = getN(median)
 
 	direction = {
@@ -29,28 +37,24 @@ def _part2(inp: Sequence[int]) -> int:
 	return int(num)
 
 
-def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
-	return (_part1, _part2)[part - 1](tuple(int(line) for line in inp))
-
-
 def main() -> int:
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
-		inp = inpF.read().strip().split(",")
-		print(f"Part 1: {solve(inp, 1)}")
-		print(f"Part 2: {solve(inp, 2)}")
+		inp = inpF.read().strip()
+		print(f"Part 1: {part1(inp)}")
+		print(f"Part 2: {part2(inp)}")
 	return 0
 
 
-EXAMPLE_INPUT = "16,1,2,0,4,2,7,1,2,14".split(",")
+EXAMPLE_INPUT = "16,1,2,0,4,2,7,1,2,14"
 @pytest.mark.parametrize(
 	("inp", "expected", "part"), (
 		pytest.param(EXAMPLE_INPUT, 37, 1, id="1 | 1"),
 		pytest.param(EXAMPLE_INPUT, 168, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence[int], expected: int, part: Literal[1, 2]):
-	assert solve(inp, part) == expected
+def test(inp: str, expected: int, part: Literal[1, 2]):
+	assert (part1, part2)[part - 1](inp) == expected
 
 
 if __name__ == "__main__":

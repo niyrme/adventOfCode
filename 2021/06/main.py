@@ -9,6 +9,11 @@ from typing import Sequence
 import pytest
 
 
+# replace with whatever type is needed
+T = int
+parseInput: Callable[[str], Sequence[T]] = lambda inp: tuple(T(line) for line in inp.split(","))
+
+
 def getFishCount(inp: Sequence[int], days: int) -> int:
 	fish = Counter(inp)
 
@@ -20,24 +25,20 @@ def getFishCount(inp: Sequence[int], days: int) -> int:
 	return sum(fish.values())
 
 
-_part1: Callable[[int], int] = lambda inp: getFishCount(inp, 80)
-_part2: Callable[[int], int] = lambda inp: getFishCount(inp, 256)
-
-
-def solve(inp: Sequence[str], part: Literal[1, 2]) -> int:
-	return (_part1, _part2)[part - 1](tuple(int(line) for line in inp))
+part1: Callable[[int], int] = lambda inp: getFishCount(parseInput(inp), 80)
+part2: Callable[[int], int] = lambda inp: getFishCount(parseInput(inp), 256)
 
 
 def main() -> int:
 	inputPath = os.path.join(os.path.dirname(__file__), "input.txt")
 	with open(inputPath) as inpF:
-		inp = inpF.read().strip().split(",")
-		print(f"Part 1: {solve(inp, 1)}")
-		print(f"Part 2: {solve(inp, 2)}")
+		inp = inpF.read().strip()
+		print(f"Part 1: {part1(inp)}")
+		print(f"Part 2: {part2(inp)}")
 	return 0
 
 
-EXAMPLE_INPUT = "3,4,3,1,2".split(",")
+EXAMPLE_INPUT = "3,4,3,1,2"
 
 
 @pytest.mark.parametrize(
@@ -46,8 +47,8 @@ EXAMPLE_INPUT = "3,4,3,1,2".split(",")
 		pytest.param(EXAMPLE_INPUT, 26984457539, 2, id="2 | 1"),
 	),
 )
-def test(inp: Sequence[str], expected: int, part: Literal[1, 2]):
-	assert solve(inp, part) == expected
+def test(inp: str, expected: int, part: Literal[1, 2]):
+	assert (part1, part2)[part - 1](inp) == expected
 
 
 if __name__ == "__main__":
