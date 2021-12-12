@@ -10,7 +10,7 @@ import pytest
 def main() -> int:
 	parser = argparse.ArgumentParser()
 	parser.add_argument("day", type=int, help="day to run. must be in range 1-25, runs all if not given")
-	parser.add_argument("-p","--part", type=int, help="specific part to run", choices=(1, 2), dest="part")
+	parser.add_argument("-p", "--part", type=int, help="specific part to run", choices=(1, 2), dest="part")
 	parser.add_argument("-T", "--skip-tests", action="store_true", help="skip tests", dest="skipTests")
 	args = parser.parse_args()
 
@@ -37,7 +37,7 @@ def main() -> int:
 			print(f"{dayStr} failed with exit code {int(testRet)}\n", file=sys.stderr)
 			return int(testRet)
 
-	dayMain = __import__(dayStr, fromlist=("main", )).main
+	dayMain = __import__(dayStr, fromlist=("main",)).main
 
 	if args.part is not None:
 		inp = open(f"{dayStr}/input.txt", "r")
