@@ -2,11 +2,9 @@
 
 import os
 from typing import Callable
-from typing import Literal
 from typing import Sequence
 
 import pytest
-
 
 # replace with whatever type is needed
 T = str
@@ -78,14 +76,24 @@ bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbg
 egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
 gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce
 """.strip()
+
+
 @pytest.mark.parametrize(
-	("inp", "expected", "part"), (
-		pytest.param(EXAMPLE_INPUT, 26, 1, id="1 | 1"),
-		pytest.param(EXAMPLE_INPUT, 61229, 2, id="2 | 1"),
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 26, id="1"),
 	),
 )
-def test(inp: str, expected: int, part: Literal[1, 2]):
-	assert (part1, part2)[part - 1](inp) == expected
+def testPart1(inp: str, expected: int):
+	assert part1(inp) == expected
+
+
+@pytest.mark.parametrize(
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 61229, id="1"),
+	),
+)
+def testPart2(inp: str, expected: int):
+	assert part2(inp) == expected
 
 
 if __name__ == "__main__":

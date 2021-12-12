@@ -2,11 +2,9 @@
 
 import os
 from typing import Callable
-from typing import Literal
 from typing import Sequence
 
 import pytest
-
 
 # replace with whatever type is needed
 T = str
@@ -95,14 +93,24 @@ EXAMPLE_INPUT = """
 <{([([[(<>()){}]>(<<{{
 <{([{{}}[<[[[<>{}]]]>[]]
 """.strip()
+
+
 @pytest.mark.parametrize(
-	("inp", "expected", "part"), (
-		pytest.param(EXAMPLE_INPUT, 26397, 1, id="1 | 1"),
-		pytest.param(EXAMPLE_INPUT, 288957, 2, id="2 | 1"),
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 26397, id="1"),
 	),
 )
-def test(inp: str, expected: int, part: Literal[1, 2]):
-	assert (part1, part2)[part - 1](inp) == expected
+def testPart1(inp: str, expected: int):
+	assert part1(inp) == expected
+
+
+@pytest.mark.parametrize(
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 288957, id="1"),
+	),
+)
+def testPart2(inp: str, expected: int):
+	assert part2(inp) == expected
 
 
 if __name__ == "__main__":

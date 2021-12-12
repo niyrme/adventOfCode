@@ -4,11 +4,9 @@ import os
 from collections import defaultdict
 from collections import deque
 from typing import Callable
-from typing import Literal
 from typing import Sequence
 
 import pytest
-
 
 # replace with whatever type is needed
 T = str
@@ -24,7 +22,7 @@ def part1(inp: str) -> int:
 		edges[dest].add(src)
 
 	done = set()
-	todo: deque[tuple[str, ...]] = deque([("start", )])
+	todo: deque[tuple[str, ...]] = deque([("start",)])
 	while todo:
 		path = todo.popleft()
 		if path[-1] == "end":
@@ -46,14 +44,14 @@ def part2(inp: str) -> int:
 		edges[dest].add(src)
 
 	done = set()
-	todo: deque[tuple[tuple[str, ...], bool]] = deque([(("start", ), False)])
+	todo: deque[tuple[tuple[str, ...], bool]] = deque([(("start",), False)])
 	while todo:
 		path, double = todo.popleft()
 		if path[-1] == "end":
 			done.add(path)
 			continue
 
-		for p in edges[path[-1]] - { "start" }:
+		for p in edges[path[-1]] - {"start"}:
 			if p.isupper():
 				todo.append(((*path, p), double))
 			elif double is False and path.count(p) == 1:
@@ -116,6 +114,7 @@ zg-he
 pj-fs
 start-RW
 """.strip()
+
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (

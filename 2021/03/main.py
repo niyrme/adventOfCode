@@ -8,7 +8,6 @@ from typing import Union
 
 import pytest
 
-
 # replace with whatever type is needed
 T = str
 parseInput: Callable[[str], Sequence[T]] = lambda inp: tuple(T(line) for line in inp.splitlines())
@@ -105,14 +104,24 @@ EXAMPLE_INPUT = """
 00010
 01010
 """.strip()
+
+
 @pytest.mark.parametrize(
-	("inp", "expected", "part"), (
-		pytest.param(EXAMPLE_INPUT, 198, 1, id="1 | 1"),
-		pytest.param(EXAMPLE_INPUT, 230, 2, id="2 | 1"),
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 198, id="1"),
 	),
 )
-def test(inp: str, expected: int, part: Literal[1, 2]):
-	assert (part1, part2)[part - 1](inp) == expected
+def testPart1(inp: str, expected: int):
+	assert part1(inp) == expected
+
+
+@pytest.mark.parametrize(
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 230, id="1"),
+	),
+)
+def testPart2(inp: str, expected: int):
+	assert part2(inp) == expected
 
 
 if __name__ == "__main__":

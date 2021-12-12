@@ -3,11 +3,9 @@
 import os
 from typing import Callable
 from typing import Generator
-from typing import Literal
 from typing import Sequence
 
 import pytest
-
 
 # replace with whatever type is needed
 T = str
@@ -104,14 +102,24 @@ EXAMPLE_INPUT = """
 4846848554
 5283751526
 """.strip()
+
+
 @pytest.mark.parametrize(
-	("inp", "expected", "part"), (
-		pytest.param(EXAMPLE_INPUT, 1656, 1, id="1 | 1"),
-		pytest.param(EXAMPLE_INPUT, 195, 2, id="2 | 1"),
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 1656, id="1"),
 	),
 )
-def test(inp: Sequence[str], expected: int, part: Literal[1, 2]):
-	assert (part1, part2)[part - 1](inp) == expected
+def testPart1(inp: Sequence[str], expected: int):
+	assert part1(inp) == expected
+
+
+@pytest.mark.parametrize(
+	("inp", "expected"), (
+		pytest.param(EXAMPLE_INPUT, 195, id="2"),
+	),
+)
+def testPart2(inp: Sequence[str], expected: int):
+	assert part2(inp) == expected
 
 
 if __name__ == "__main__":
