@@ -9,9 +9,11 @@ import pytest
 
 # replace with whatever type is needed
 T = str
-parseInput: Callable[[str], Sequence[T]] = lambda inp: tuple(T(line) for line in inp.splitlines())
+def parseInput(inp: str) -> Sequence[T]:
+	return tuple(T(line) for line in inp.splitlines())
 # not the actual python 2 cmp, because output is flipped
-cmp: Callable[[int, int], int] = lambda a, b: int(a < b) - int(a > b)
+def cmp(a: int, b: int) -> int:
+	return int(a < b) - int(a > b)
 
 
 def part1(inp: str) -> int:

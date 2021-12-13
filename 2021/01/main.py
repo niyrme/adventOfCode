@@ -8,8 +8,8 @@ import pytest
 
 # replace with whatever type is needed
 T = int
-parseInput: Callable[[str], Sequence[T]] = lambda inp: tuple(T(line) for line in inp.splitlines())
-
+def parseInput(inp: str) -> Sequence[T]:
+	return tuple(T(line) for line in inp.splitlines())
 
 def part1(inp: str) -> int:
 	depths = parseInput(inp)

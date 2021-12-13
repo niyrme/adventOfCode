@@ -11,7 +11,8 @@ import pytest
 
 # replace with whatever type is needed
 T = str
-parseInput: Callable[[str], Sequence[T]] = lambda inp: tuple(T(line) for line in inp.splitlines())
+def parseInput(inp: str) -> Sequence[T]:
+	return tuple(T(line) for line in inp.splitlines())
 
 
 def neighbours(x: int, y: int) -> Generator[tuple[int, int], None, None]:
