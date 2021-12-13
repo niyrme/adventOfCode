@@ -52,29 +52,24 @@ def part2(inp: str) -> str:
 		foldAmnt = int(fold[13:])
 
 		if foldDir == "x":
-			newCoords = set()
-			for x, y in coords:
-				newCoords.add((x if x < foldAmnt else (foldAmnt - (x - foldAmnt)), y))
-			coords = newCoords
+			coords = {
+				(x if x < foldAmnt else (foldAmnt - (x - foldAmnt)), y)
+				for (x, y) in coords
+			}
 		else:
-			newCoords = set()
-			for x, y in coords:
-				newCoords.add((x, y if y < foldAmnt else (foldAmnt - (y - foldAmnt))))
-			coords = newCoords
+			coords = {
+				(x, y if y < foldAmnt else (foldAmnt - (y - foldAmnt)))
+				for (x, y) in coords
+			}
 
-	maxX = -1
-	maxY = -1
-	for x, y in coords:
-		maxX = max(maxX, x)
-		maxY = max(maxY, y)
+	maxX = max(x for x, _ in coords)
+	maxY = max(y for _, y in coords)
 
+	# newline because output looks whaky otherwise
 	outStr = "\n"
 	for y in range(maxY + 1):
 		for x in range(maxX + 1):
-			if (x, y) in coords:
-				outStr += "#"
-			else:
-				outStr += " "
+			outStr += "#" if (x, y) in coords else " "
 		outStr += "\n"
 	return outStr
 
