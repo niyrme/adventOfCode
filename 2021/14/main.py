@@ -15,21 +15,36 @@ def parseInput(inp: str) -> Sequence[T]:
 
 
 def part1(inp: str) -> int:
-	templ, _pairs = parseInput(inp)
+	templ, _patterns = parseInput(inp)
 
-	pairs = defaultdict(str)
-	for pair in _pairs.splitlines():
-		frm, to = pair.split(" -> ")
-		pairs[frm.strip()] = to.strip()
+	patterns = dict()
+	for pattern in _patterns.splitlines():
+		frm, to = pattern.split(" -> ")
+		patterns[frm] = to
+
+	pairCounts = Counter()
+	for i in range(len(templ) - 1):
+		pairCounts[templ[i:i + 2]] += 1
 
 	for _ in range(10):
-		templ = "".join(
-			templ[i] + pairs[templ[i:i+2]] + ("" if i <= len(templ) else templ[i+1])
-			for i in range(len(templ))
-		)
+		newPairs = Counter()
+		charCounts = Counter()
 
-	elemC = Counter(templ)
-	return max(elemC.values()) - min(elemC.values())
+		for k, v in pairCounts.items():
+			pat = patterns[k]
+			newPairs[f"{k[0]}{pat}"] += v
+			newPairs[f"{pat}{k[1]}"] += v
+
+			charCounts[k[0]] += v
+			charCounts[pat] += v
+
+		pairCounts = newPairs
+
+	charCounts[templ[-1]] += 1
+
+	c = sorted(charCounts.values())
+
+	return c[-1] - c[0]
 
 
 def part2(inp: str) -> int:
