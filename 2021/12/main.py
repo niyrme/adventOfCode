@@ -3,13 +3,13 @@
 import os
 from collections import defaultdict
 from collections import deque
-from typing import Callable
 from typing import Sequence
 
 import pytest
 
-# replace with whatever type is needed
 T = str
+
+
 def parseInput(inp: str) -> Sequence[T]:
 	return tuple(T(line) for line in inp.splitlines())
 

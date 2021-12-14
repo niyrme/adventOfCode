@@ -2,15 +2,17 @@
 
 import os
 from collections import Counter
-from typing import Callable
 from typing import Sequence
 
 import pytest
 
-# replace with whatever type is needed
 T = str
+
+
 def parseInput(inp: str) -> Sequence[T]:
 	return tuple(T(line) for line in inp.splitlines())
+
+
 # not the actual python 2 cmp, because output is flipped
 def cmp(a: int, b: int) -> int:
 	return int(a < b) - int(a > b)

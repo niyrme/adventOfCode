@@ -7,8 +7,9 @@ from typing import Sequence
 
 import pytest
 
-# replace with whatever type is needed
 T = int
+
+
 def parseInput(inp: str) -> Sequence[T]:
 	return tuple(T(line) for line in inp.split(","))
 

@@ -5,8 +5,9 @@ from typing import Sequence
 
 import pytest
 
-# replace with whatever type is needed
 T = str
+
+
 def parseInput(inp: str) -> Sequence[T]:
 	return tuple(T(line) for line in inp.split("\n\n"))
 

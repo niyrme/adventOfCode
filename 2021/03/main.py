@@ -1,15 +1,15 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Callable
 from typing import Literal
 from typing import Sequence
 from typing import Union
 
 import pytest
 
-# replace with whatever type is needed
 T = str
+
+
 def parseInput(inp: str) -> Sequence[T]:
 	return tuple(T(line) for line in inp.splitlines())
 
