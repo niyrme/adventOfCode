@@ -33,33 +33,36 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	# FIXME: optimization problem
-	# me too 3Head
-	templ, _pairs = parseInput(inp)
+	templ, _patterns = parseInput(inp)
 
-	pairs = defaultdict(str)
-	for pair in _pairs.splitlines():
-		frm, to = pair.split(" -> ")
-		pairs[frm.strip()] = to.strip()
+	patterns = dict()
+	for pattern in _patterns.splitlines():
+		frm, to = pattern.split(" -> ")
+		patterns[frm] = to
 
-	for iterc in range(40):
-		start = time.time()
-		n = ""
+	pairCounts = Counter()
+	for i in range(len(templ) - 1):
+		pairCounts[templ[i:i + 2]] += 1
 
-		i = 0
-		for i in range(len(templ)):
-			el = templ[i:i+2]
-			n += pairs[el]
-			n += templ[i]
-			n += pairs[el]
-			n += "" if i <= len(templ) else templ[i + 1]
+	for _ in range(40):
+		newPairs = Counter()
+		charCounts = Counter()
 
-		templ = n
-		print(f"i={iterc:<3} {(time.time()-start):.3f}")
-		start = time.time()
+		for k, v in pairCounts.items():
+			pat = patterns[k]
+			newPairs[f"{k[0]}{pat}"] += v
+			newPairs[f"{pat}{k[1]}"] += v
 
-	elemC = Counter(templ)
-	return max(elemC.values()) - min(elemC.values())
+			charCounts[k[0]] += v
+			charCounts[pat] += v
+
+		pairCounts = newPairs
+
+	charCounts[templ[-1]] += 1
+
+	vals = charCounts.values()
+
+	return max(vals) - min(vals)
 
 
 def main() -> int:
