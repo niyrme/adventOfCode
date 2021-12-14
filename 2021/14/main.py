@@ -1,15 +1,14 @@
 #!/usr/bin/env python3
 
 import os
-import time
-from collections import defaultdict
 from collections import Counter
 from typing import Sequence
 
 import pytest
 
-# replace with whatever type is needed
 T = str
+
+
 def parseInput(inp: str) -> Sequence[T]:
 	return tuple(T(line) for line in inp.split("\n\n"))
 
@@ -42,9 +41,7 @@ def part1(inp: str) -> int:
 
 	charCounts[templ[-1]] += 1
 
-	c = sorted(charCounts.values())
-
-	return c[-1] - c[0]
+	return max(charCounts.values()) - min(charCounts.values())
 
 
 def part2(inp: str) -> int:
@@ -75,9 +72,7 @@ def part2(inp: str) -> int:
 
 	charCounts[templ[-1]] += 1
 
-	vals = charCounts.values()
-
-	return max(vals) - min(vals)
+	return max(charCounts.values()) - min(charCounts.values())
 
 
 def main() -> int:
