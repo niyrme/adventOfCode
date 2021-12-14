@@ -23,16 +23,10 @@ def part1(inp: str) -> int:
 		pairs[frm.strip()] = to.strip()
 
 	for _ in range(10):
-		n = ""
-
-		i = 0
-		for i in range(len(templ)):
-			el = templ[i:i+2]
-			n += templ[i]
-			n += pairs[el]
-			n += "" if i <= len(templ) else templ[i + 1]
-
-		templ = n
+		templ = "".join(
+			templ[i] + pairs[templ[i:i+2]] + ("" if i <= len(templ) else templ[i+1])
+			for i in range(len(templ))
+		)
 
 	elemC = Counter(templ)
 	return max(elemC.values()) - min(elemC.values())
