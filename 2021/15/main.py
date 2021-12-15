@@ -38,7 +38,7 @@ def getPath(coords: dict[tuple[int, int], int]) -> int:
 			if np in coords:
 				todo.put((cost + coords[np], np))
 
-	return bestAt[lastXY]
+	raise AssertionError("unreachable")
 
 
 def part1(inp: str) -> int:
