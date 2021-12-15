@@ -50,18 +50,10 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	def overflow(n: int):
-		while n > 9:
-			n -= 9
-		return n
-
-	lines = inp.splitlines()
-	w = len(lines[0])
-	h = len(lines)
-
 	return getPath({
-		(iX * h + x, iY * w + y): overflow(int(v) + iX + iY)
-		for y, line in enumerate(lines)
+		# assume square
+		(iX * len(line) + x, iY * len(line) + y): (lambda n: n - (9 * (n // 10)))(int(v) + iX + iY)
+		for y, line in enumerate(inp.splitlines())
 		for x, v in enumerate(line)
 		for iY in range(5)
 		for iX in range(5)
