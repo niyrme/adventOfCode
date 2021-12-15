@@ -2,77 +2,47 @@
 
 import os
 from collections import Counter
-from typing import Sequence
 
 import pytest
 
-T = str
 
+def calc(templ: str, _patterns: str, iters: int) -> int:
+	patterns = dict()
+	for pattern in _patterns.splitlines():
+		frm, to = pattern.split(" -> ")
+		patterns[frm] = to
 
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.split("\n\n"))
+	pairCounts = Counter()
+	for i in range(len(templ) - 1):
+		pairCounts[templ[i:i + 2]] += 1
+
+	charCounts = Counter()
+
+	for _ in range(iters):
+		newPairs = Counter()
+		charCounts = Counter()
+
+		for k, v in pairCounts.items():
+			pat = patterns[k]
+			newPairs[f"{k[0]}{pat}"] += v
+			newPairs[f"{pat}{k[1]}"] += v
+
+			charCounts[k[0]] += v
+			charCounts[pat] += v
+
+		pairCounts = newPairs
+
+	charCounts[templ[-1]] += 1
+
+	return max(charCounts.values()) - min(charCounts.values())
 
 
 def part1(inp: str) -> int:
-	templ, _patterns = parseInput(inp)
-
-	patterns = dict()
-	for pattern in _patterns.splitlines():
-		frm, to = pattern.split(" -> ")
-		patterns[frm] = to
-
-	pairCounts = Counter()
-	for i in range(len(templ) - 1):
-		pairCounts[templ[i:i + 2]] += 1
-
-	for _ in range(10):
-		newPairs = Counter()
-		charCounts = Counter()
-
-		for k, v in pairCounts.items():
-			pat = patterns[k]
-			newPairs[f"{k[0]}{pat}"] += v
-			newPairs[f"{pat}{k[1]}"] += v
-
-			charCounts[k[0]] += v
-			charCounts[pat] += v
-
-		pairCounts = newPairs
-
-	charCounts[templ[-1]] += 1
-
-	return max(charCounts.values()) - min(charCounts.values())
+	return calc(*inp.split("\n\n"), iters=10)
 
 
 def part2(inp: str) -> int:
-	templ, _patterns = parseInput(inp)
-
-	patterns = dict()
-	for pattern in _patterns.splitlines():
-		frm, to = pattern.split(" -> ")
-		patterns[frm] = to
-
-	pairCounts = Counter()
-	for i in range(len(templ) - 1):
-		pairCounts[templ[i:i + 2]] += 1
-
-	for _ in range(40):
-		newPairs = Counter()
-		charCounts = Counter()
-
-		for k, v in pairCounts.items():
-			pat = patterns[k]
-			newPairs[f"{k[0]}{pat}"] += v
-			newPairs[f"{pat}{k[1]}"] += v
-
-			charCounts[k[0]] += v
-			charCounts[pat] += v
-
-		pairCounts = newPairs
-
-	charCounts[templ[-1]] += 1
-
-	return max(charCounts.values()) - min(charCounts.values())
+	return calc(*inp.split("\n\n"), iters=40)
 
 
 def main() -> int:
