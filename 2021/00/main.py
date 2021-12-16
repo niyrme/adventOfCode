@@ -1,25 +1,23 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-# replace with whatever type is needed
-T = int
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
-
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
+	lines = inp.splitlines()
+	for line in lines:
+		...
+
 	raise NotImplementedError
 
 
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
+	lines = inp.splitlines()
+	for line in lines:
+		...
+
 	raise NotImplementedError
 
 
