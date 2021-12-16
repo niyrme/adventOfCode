@@ -104,7 +104,7 @@ fold along x=5
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT, 17, id="1"),
+		pytest.param(EXAMPLE_INPUT, 17),
 	),
 )
 def testPart1(inp: str, expected: int):

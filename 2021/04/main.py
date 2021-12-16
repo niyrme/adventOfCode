@@ -115,7 +115,7 @@ EXAMPLE_INPUT = """
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT, 4512, id="1"),
+		pytest.param(EXAMPLE_INPUT, 4512),
 	),
 )
 def testPart1(inp: str, expected: int):
@@ -124,7 +124,7 @@ def testPart1(inp: str, expected: int):
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT, 1924, id="1"),
+		pytest.param(EXAMPLE_INPUT, 1924),
 	),
 )
 def testPart2(inp: str, expected: int):

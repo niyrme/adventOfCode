@@ -180,10 +180,10 @@ def main() -> int:
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param("8A004A801A8002F478", 16, id="1"),
-		pytest.param("620080001611562C8802118E34", 12, id="2"),
-		pytest.param("C0015000016115A2E0802F182340", 23, id="3"),
-		pytest.param("A0016C880162017C3686B18A3D4780", 31, id="4"),
+		pytest.param("8A004A801A8002F478", 16),
+		pytest.param("620080001611562C8802118E34", 12),
+		pytest.param("C0015000016115A2E0802F182340", 23),
+		pytest.param("A0016C880162017C3686B18A3D4780", 31),
 	),
 )
 def testPart1(inp: str, expected: int):
@@ -192,14 +192,14 @@ def testPart1(inp: str, expected: int):
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param("C200B40A82", 3, id="1"),
-		pytest.param("04005AC33890", 54, id="2"),
-		pytest.param("880086C3E88112", 7, id="3"),
-		pytest.param("CE00C43D881120", 9, id="4"),
-		pytest.param("D8005AC2A8F0", 1, id="5"),
-		pytest.param("F600BC2D8F", 0, id="6"),
-		pytest.param("9C005AC2F8F0", 0, id="7"),
-		pytest.param("9C0141080250320F1802104A08", 1, id="8"),
+		pytest.param("C200B40A82", 3),
+		pytest.param("04005AC33890", 54),
+		pytest.param("880086C3E88112", 7),
+		pytest.param("CE00C43D881120", 9),
+		pytest.param("D8005AC2A8F0", 1),
+		pytest.param("F600BC2D8F", 0),
+		pytest.param("9C005AC2F8F0", 0),
+		pytest.param("9C0141080250320F1802104A08", 1),
 	),
 )
 def testPart2(inp: str, expected: int):

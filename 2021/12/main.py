@@ -110,9 +110,9 @@ start-RW
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT_1, 10, id="1"),
-		pytest.param(EXAMPLE_INPUT_2, 19, id="2"),
-		pytest.param(EXAMPLE_INPUT_3, 226, id="3"),
+		pytest.param(EXAMPLE_INPUT_1, 10),
+		pytest.param(EXAMPLE_INPUT_2, 19),
+		pytest.param(EXAMPLE_INPUT_3, 226),
 	),
 )
 def testPart1(inp: str, expected: int):
@@ -121,9 +121,9 @@ def testPart1(inp: str, expected: int):
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT_1, 36, id="1"),
-		pytest.param(EXAMPLE_INPUT_2, 103, id="2"),
-		pytest.param(EXAMPLE_INPUT_3, 3509, id="3"),
+		pytest.param(EXAMPLE_INPUT_1, 36),
+		pytest.param(EXAMPLE_INPUT_2, 103),
+		pytest.param(EXAMPLE_INPUT_3, 3509),
 	),
 )
 def testPart2(inp: str, expected: int):
