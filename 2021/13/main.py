@@ -111,14 +111,5 @@ def testPart1(inp: str, expected: int):
 	assert part1(inp) == expected
 
 
-@pytest.mark.parametrize(
-	("inp", "expected"), (
-		# pytest.param(EXAMPLE_INPUT, 0, id="1"),
-	),
-)
-def testPart2(inp: str, expected: int):
-	assert part2(inp) == expected
-
-
 if __name__ == "__main__":
 	raise SystemExit(main())
