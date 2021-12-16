@@ -37,7 +37,7 @@ def part1(inp: str) -> int:
 
 # slightly cheated. explaination was kinda wanky and I couldn't find a way to make it work
 def part2(inp: str) -> int:
-	numbersS, boardsS = inp.split("\n\n")
+	numbersS, *boardsS = inp.split("\n\n")
 	numbers = tuple(int(str(n).strip()) for n in numbersS.split(","))
 
 	boards: list[list[int]] = []
