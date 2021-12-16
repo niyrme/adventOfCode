@@ -33,7 +33,7 @@ def main() -> int:
 
 	if args.skipTests is False:
 		testRet: pytest.ExitCode = pytest.main(testArgs)
-		if testRet != pytest.ExitCode.OK:
+		if testRet not in (pytest.ExitCode.OK, pytest.ExitCode.NO_TESTS_COLLECTED):
 			print(f"{dayStr} failed with exit code {int(testRet)}\n", file=sys.stderr)
 			return int(testRet)
 
