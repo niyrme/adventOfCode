@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-T = int
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
-
 
 def part1(inp: str) -> int:
-	depths = parseInput(inp)
+	depths = tuple(int(line) for line in inp.splitlines())
 	return tuple(
 		(depths[i - 1] < depths[i])
 		for i in range(1, len(depths))
@@ -21,7 +14,7 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	depths = parseInput(inp)
+	depths = tuple(int(line) for line in inp.splitlines())
 	return part1("\n".join(
 		str(sum(depths[i:(i + 3)]))
 		for i in range(len(depths) - 2)

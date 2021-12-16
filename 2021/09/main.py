@@ -4,15 +4,8 @@ import os
 from collections import defaultdict
 from math import prod
 from typing import Generator
-from typing import Sequence
 
 import pytest
-
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
 
 
 def neighbours(x: int, y: int) -> Generator[tuple[int, int], None, None]:
@@ -23,9 +16,8 @@ def neighbours(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
 	coords: dict[tuple[int, int], int] = defaultdict(int)
-	for y, line in enumerate(lines):
+	for y, line in enumerate(inp.splitlines()):
 		for x, char in enumerate(line):
 			coords[(x, y)] = int(char)
 
@@ -33,9 +25,8 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
 	coords: dict[tuple[int, int], int] = defaultdict(int)
-	for y, line in enumerate(lines):
+	for y, line in enumerate(inp.splitlines()):
 		for x, char in enumerate(line):
 			coords[(x, y)] = int(char)
 

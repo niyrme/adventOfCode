@@ -3,24 +3,17 @@
 import os
 import statistics
 from typing import Callable
-from typing import Sequence
 
 import pytest
 
-T = int
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.split(","))
-
 
 def part1(inp: str) -> int:
-	nums = parseInput(inp)
+	nums = tuple(int(line) for line in inp.split(","))
 	return int(sum(abs(num - statistics.median(nums)) for num in nums))
 
 
 def part2(inp: str) -> int:
-	nums = parseInput(inp)
+	nums = tuple(int(line) for line in inp.split(","))
 	getN: Callable[[int], int] = lambda n: sum(abs(num - n) * (abs(num - n) + 1) // 2 for num in nums)
 	median = statistics.median(nums)
 	num = getN(median)

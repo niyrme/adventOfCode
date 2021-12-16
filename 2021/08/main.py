@@ -1,33 +1,24 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
-
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
 	return sum(map(
 		lambda line: sum(list(map(
 			lambda x: len(x.strip()) in (2, 3, 4, 7),
 			line.split("|")[1].strip().split(),
 		))),
-		lines,
+		inp.splitlines(),
 	))
 
 
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
 	count = 0
 
-	for line in lines:
+	for line in inp.splitlines():
 		ins, outs = line.strip().split("|")
 		_outs = ["".join(sorted(s)) for s in outs.split()]
 		_numbers = {*ins.split(), *_outs}

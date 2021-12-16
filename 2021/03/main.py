@@ -7,15 +7,9 @@ from typing import Union
 
 import pytest
 
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
-
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
+	lines = tuple(line for line in inp.splitlines())
 	newInp = []
 
 	for x in list(zip(*lines)):
@@ -56,7 +50,7 @@ def filterBits(bitStrings: Sequence[str], pos: int, expected: int) -> Sequence[s
 
 
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
+	lines = tuple(line for line in inp.splitlines())
 	bits0 = filterBits(lines, 0, 0)
 	bits1 = filterBits(lines, 0, 1)
 

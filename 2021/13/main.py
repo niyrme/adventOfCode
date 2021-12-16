@@ -1,19 +1,12 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.split("\n\n"))
-
 
 def part1(inp: str) -> int:
-	dots, folds = parseInput(inp)
+	dots, folds = inp.split("\n\n")
 	coords = set()
 
 	for coord in dots.splitlines():
@@ -41,7 +34,7 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> str:
-	dots, folds = parseInput(inp)
+	dots, folds = inp.split("\n\n")
 	coords = set()
 
 	for coord in dots.splitlines():

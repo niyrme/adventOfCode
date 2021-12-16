@@ -2,15 +2,8 @@
 
 import os
 from collections import Counter
-from typing import Sequence
 
 import pytest
-
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
 
 
 # not the actual python 2 cmp, because output is flipped
@@ -19,9 +12,8 @@ def cmp(a: int, b: int) -> int:
 
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
 	board = Counter()
-	for line in lines:
+	for line in inp.splitlines():
 		frm, to = line.strip().split("->")
 		x1, y1 = (int(d) for d in frm.split(","))
 		x2, y2 = (int(d) for d in to.split(","))
@@ -37,9 +29,8 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
 	board = Counter()
-	for line in lines:
+	for line in inp.splitlines():
 		frm, to = line.strip().split("->")
 		x1, y1 = (int(d) for d in frm.split(","))
 		x2, y2 = (int(d) for d in to.split(","))

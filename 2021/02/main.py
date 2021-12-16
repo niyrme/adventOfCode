@@ -1,23 +1,15 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
-
 
 def part1(inp: str) -> int:
-	commands = parseInput(inp)
 	x = 0
 	depth = 0
 
-	for command in commands:
+	for command in inp.splitlines():
 		cmd, value = str(command).lower().split(" ")
 		_value = int(value)
 		if cmd == "forward":
@@ -30,12 +22,11 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	commands = parseInput(inp)
 	x = 0
 	depth = 0
 	aim = 0
 
-	for command in commands:
+	for command in inp.splitlines():
 		cmd, value = str(command).lower().split(" ")
 		_value = int(value)
 		if cmd == "forward":

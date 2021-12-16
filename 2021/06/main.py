@@ -7,12 +7,6 @@ from typing import Sequence
 
 import pytest
 
-T = int
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.split(","))
-
 
 def getFishCount(inp: Sequence[int], days: int) -> int:
 	fish = Counter(inp)
@@ -25,8 +19,8 @@ def getFishCount(inp: Sequence[int], days: int) -> int:
 	return sum(fish.values())
 
 
-part1: Callable[[int], int] = lambda inp: getFishCount(parseInput(inp), 80)
-part2: Callable[[int], int] = lambda inp: getFishCount(parseInput(inp), 256)
+part1: Callable[[str], int] = lambda inp: getFishCount(tuple(int(line) for line in inp.split(",")), 80)
+part2: Callable[[str], int] = lambda inp: getFishCount(tuple(int(line) for line in inp.split(",")), 256)
 
 
 def main() -> int:

@@ -1,19 +1,11 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
-
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
 	penalty = {
 		")": 3,
 		"]": 57,
@@ -29,7 +21,7 @@ def part1(inp: str) -> int:
 	}
 
 	total = 0
-	for line in lines:
+	for line in inp.splitlines():
 		opened = []
 
 		for c in line:
@@ -42,7 +34,6 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
 	penalty = {k: i + 1 for i, k in enumerate("([{<")}
 
 	closeToOpen = {
@@ -53,7 +44,7 @@ def part2(inp: str) -> int:
 	}
 
 	totals = []
-	for line in lines:
+	for line in inp.splitlines():
 		opened = []
 
 		for c in line:

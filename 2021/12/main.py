@@ -3,21 +3,13 @@
 import os
 from collections import defaultdict
 from collections import deque
-from typing import Sequence
 
 import pytest
-
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.splitlines())
 
 
 def part1(inp: str) -> int:
 	edges: dict[str, set] = defaultdict(set)
-	lines = parseInput(inp)
-	for line in lines:
+	for line in inp.splitlines():
 		src, dest = line.split("-")
 		edges[src].add(dest)
 		edges[dest].add(src)
@@ -38,8 +30,7 @@ def part1(inp: str) -> int:
 
 def part2(inp: str) -> int:
 	edges: dict[str, set] = defaultdict(set)
-	lines = parseInput(inp)
-	for line in lines:
+	for line in inp.splitlines():
 		src, dest = line.split("-")
 		edges[src].add(dest)
 		edges[dest].add(src)

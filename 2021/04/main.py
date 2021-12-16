@@ -1,24 +1,17 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Sequence
 
 import pytest
 
-T = str
-
-
-def parseInput(inp: str) -> Sequence[T]:
-	return tuple(T(line) for line in inp.split("\n\n"))
-
 
 def part1(inp: str) -> int:
-	lines = parseInput(inp)
-	numbers = tuple(int(str(n).strip()) for n in lines[0].split(","))
+	numbersS, *boardsS = inp.split("\n\n")
+	numbers = tuple(int(str(n).strip()) for n in numbersS.split(","))
 
 	boards: list[list[int]] = list()
 
-	for board in lines[1:]:
+	for board in boardsS:
 		_board = []
 		for line in board.strip().splitlines():
 			line = line.strip()
@@ -44,12 +37,12 @@ def part1(inp: str) -> int:
 
 # slightly cheated. explaination was kinda wanky and I couldn't find a way to make it work
 def part2(inp: str) -> int:
-	lines = parseInput(inp)
-	numbers = tuple(int(str(n).strip()) for n in lines[0].split(","))
+	numbersS, boardsS = inp.split("\n\n")
+	numbers = tuple(int(str(n).strip()) for n in numbersS.split(","))
 
 	boards: list[list[int]] = []
 
-	for board in lines[1:]:
+	for board in boardsS:
 		_board = []
 		for line in board.strip().splitlines():
 			line = line.strip()
