@@ -110,7 +110,7 @@ EXAMPLE_INPUT = """
 		pytest.param(EXAMPLE_INPUT, 1656, id="1"),
 	),
 )
-def testPart1(inp: Sequence[str], expected: int):
+def testPart1(inp: str, expected: int):
 	assert part1(inp) == expected
 
 
@@ -119,7 +119,7 @@ def testPart1(inp: Sequence[str], expected: int):
 		pytest.param(EXAMPLE_INPUT, 195, id="2"),
 	),
 )
-def testPart2(inp: Sequence[str], expected: int):
+def testPart2(inp: str, expected: int):
 	assert part2(inp) == expected
 
 
