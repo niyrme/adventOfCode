@@ -1,25 +1,18 @@
 #!/usr/bin/env python3
 
 import os
-from typing import Optional
 
 import pytest
 
 
 def part1(inp: str) -> int:
-	l = inp.strip()[13:]
-	xRange, yRange = l.split(", ")
+	target = inp.strip()[13:]
+	yRange = target.split(", ")[1]
 
-	xStart, xEnd = xRange[2:].split("..")
-	yStart, yEnd = yRange[2:].split("..")
+	yStart = yRange[2:].split("..")[1]
 
-	x1, x2 = int(xStart), int(xEnd)
-	y1, y2 = int(yStart), int(yEnd)
-
-	y0 = abs(y1) - 1
-	t = y0
-
-	return y0 * t - (t - 1) * t // 2
+	y = abs(int(yStart)) - 1
+	return y * y - (y - 1) * y // 2
 
 
 def part2(inp: str) -> int:
