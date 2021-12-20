@@ -7,22 +7,49 @@ import pytest
 
 def part1(inp: str) -> int:
 	target = inp.strip()[13:]
-	yRange = target.split(", ")[1]
+	rangeY = target.split(", ")[1]
 
-	yStart = yRange[2:].split("..")[1]
+	startY = rangeY[2:].split("..")[0]
 
-	y = abs(int(yStart)) - 1
+	y = abs(int(startY)) - 1
 	return y * y - (y - 1) * y // 2
 
 
 def part2(inp: str) -> int:
-	# TODO
-	# - get direction in which landing area is (+x / -x / both?)
-	# - iterate y from (-99 to maxY)
-	#   - maxY is the maximum y value until the probe misses after 1 step
-	# - same for x?
-	# NOTE: probe starts at (0, 0), not any number. the velocity is different just
-	raise NotImplementedError
+	target = inp.strip()[13:]
+	rangeX, rangeY = target.split(", ")
+	startXS, endXS = rangeX[2:].split("..")
+	startYS, endYS = rangeY[2:].split("..")
+
+	startX, endX = int(startXS), int(endXS)
+	startY, endY = int(startYS), int(endYS)
+
+	total = 0
+
+	for x in range(1, endX + 1):
+		for y in range(startY, abs(startY)):
+			velX = x
+			velY = y
+			posX = posY = 0
+			for _ in range(2 * abs(startY) + 1):
+				posX += velX
+				posY += velY
+
+				if velX > 0:
+					velX -= 1
+				elif velX < 0:
+					velX += 1
+
+				velY -= 1
+
+				if startX <= posX <= endX and startY <= posY <= endY:
+					total += 1
+					break
+				elif posX > endX or posY < startY:
+					# overshot the target
+					break
+
+	return total
 
 
 def main() -> int:
