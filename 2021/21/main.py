@@ -81,37 +81,7 @@ def part2(inp: str) -> int:
 
 		return wins
 
-	# a failed attempt
-	# def compute(p1: Score, p2: Score, roll: int, p1Turn: bool) -> None:
-	# 	_p1 = p1
-	# 	_p2 = p2
-	#
-	# 	if p1Turn:
-	# 		newPos = mod(p1.pos + roll)
-	# 		newScore = p1.score + newPos
-	#
-	# 		if newScore >= 21:
-	# 			wins[1] += 1
-	# 			return
-	#
-	# 		_p1 = Score(newPos, newScore)
-	# 	else:
-	# 		newPos = mod(p2.pos + roll)
-	# 		newScore = p2.score + newPos
-	#
-	# 		if newScore >= 21:
-	# 			wins[2] += 1
-	# 			return
-	#
-	# 		_p2 = Score(newPos, newScore)
-	#
-	# 	for r in range(1, 4):
-	# 		compute(_p1, _p2, r, (not p1Turn))
-
-
-	wins = compute(Score(p1Pos, 0), Score(p2Pos, 0))
-
-	return max(wins)
+	return max(compute(Score(p1Pos, 0), Score(p2Pos, 0)))
 
 
 def main() -> int:
