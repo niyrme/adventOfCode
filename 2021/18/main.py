@@ -83,14 +83,17 @@ def part1(inp: str) -> int:
 
 def part2(inp: str) -> int:
 	lines = inp.splitlines()
-	magnitudes: set[int] = set()
+	maxMag = 0
 
 	for i, line1 in enumerate(lines):
 		for line2 in lines[(i + 1):]:
-			magnitudes.add(getSum(reduce(addPair(line1, line2))))
-			magnitudes.add(getSum(reduce(addPair(line2, line1))))
+			maxMag = max(
+				maxMag,
+				getSum(reduce(addPair(line1, line2))),
+				getSum(reduce(addPair(line2, line1))),
+			)
 
-	return max(magnitudes)
+	return maxMag
 
 
 def main() -> int:
