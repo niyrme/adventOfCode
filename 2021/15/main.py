@@ -7,6 +7,12 @@ from typing import Generator
 import pytest
 
 
+def mod(n: int) -> int:
+	while n > 9:
+		n -= 9
+	return n
+
+
 def nextPos(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 	# prioritize right and bottom
 	yield (x, y + 1)
@@ -52,7 +58,7 @@ def part1(inp: str) -> int:
 def part2(inp: str) -> int:
 	return getPath({
 		# assume square
-		(iX * len(line) + x, iY * len(line) + y): (lambda n: n - (9 * (n // 10)))(int(v) + iX + iY)
+		(iX * len(line) + x, iY * len(line) + y): mod(int(v) + iX + iY)
 		for y, line in enumerate(inp.splitlines())
 		for x, v in enumerate(line)
 		for iY in range(5)
