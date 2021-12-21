@@ -12,6 +12,7 @@ def main() -> int:
 	parser.add_argument("day", type=int, help="day to run. must be in range 1-25, runs all if not given")
 	parser.add_argument("-p", "--part", type=int, help="specific part to run", choices=(1, 2), dest="part")
 	parser.add_argument("-T", "--skip-tests", action="store_true", help="skip tests", dest="skipTests")
+	parser.add_argument("-t", "--tests", action="store_true", help="only run tests", dest="runTests")
 	args = parser.parse_args()
 
 	if not 0 < args.day < 26:
@@ -31,10 +32,17 @@ def main() -> int:
 		for arg in ("-k", f"testPart{args.part}"):
 			testArgs.append(arg)
 
+	if args.runTests:
+		testRet: pytest.ExitCode = pytest.main(testArgs)
+		if testRet not in (pytest.ExitCode.OK, pytest.ExitCode.NO_TESTS_COLLECTED):
+			print(f"{dayStr} tests failed with exit code {int(testRet)}\n", file=sys.stderr)
+			return int(testRet)
+		return 0
+
 	if args.skipTests is False:
 		testRet: pytest.ExitCode = pytest.main(testArgs)
 		if testRet not in (pytest.ExitCode.OK, pytest.ExitCode.NO_TESTS_COLLECTED):
-			print(f"{dayStr} failed with exit code {int(testRet)}\n", file=sys.stderr)
+			print(f"{dayStr} tests failed with exit code {int(testRet)}\n", file=sys.stderr)
 			return int(testRet)
 
 	dayMain = __import__(dayStr, fromlist=("main",)).main
