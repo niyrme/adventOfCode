@@ -68,18 +68,19 @@ def part2(inp: str) -> int:
 
 	@functools.lru_cache(maxsize=None)
 	def compute(p1: Score, p2: Score) -> tuple[int, int]:
-		wins = (0, 0)
+		p1Wins = p2Wins = 0
 		for k, ct in rolls.items():
 			newP1Pos = mod(p1.pos + k)
 			newP1Score = p1.score + newP1Pos
 
 			if newP1Score >= 21:
-				wins = (wins[0] + ct, wins[1])
+				p1Wins += ct
 			else:
-				p2Wins, p1Wins = compute(p2, Score(newP1Pos, newP1Score))
-				wins = (wins[0] + p1Wins * ct, wins[1] + p2Wins * ct)
+				_p2Wins, _p1Wins = compute(p2, Score(newP1Pos, newP1Score))
+				p1Wins += _p1Wins * ct
+				p2Wins += _p2Wins * ct
 
-		return wins
+		return (p1Wins, p2Wins)
 
 	return max(compute(Score(p1Pos, 0), Score(p2Pos, 0)))
 
