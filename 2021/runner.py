@@ -29,8 +29,7 @@ def main() -> int:
 
 	testArgs = [f"{dayStr}/main.py", "-q"]
 	if args.part is not None:
-		for arg in ("-k", f"testPart{args.part}"):
-			testArgs.append(arg)
+		testArgs += ["-k", f"testPart{args.part}"]
 
 	if args.runTests:
 		testRet: pytest.ExitCode = pytest.main(testArgs)
