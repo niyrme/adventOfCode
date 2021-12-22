@@ -40,7 +40,7 @@ def mostCommon(bitStrings: Sequence[str], pos: int) -> Union[Literal[0, 1], None
 
 
 def filterBits(bitStrings: Sequence[str], pos: int, expected: int) -> Sequence[str]:
-	filtered = {bitString if bitString[pos] == str(expected) else None for bitString in bitStrings}
+	filtered = {bitString for bitString in bitStrings if bitString[pos] == str(expected)}
 	try:
 		filtered.remove(None)
 	except KeyError:
