@@ -3,7 +3,6 @@ from __future__ import annotations
 import argparse
 import os
 import re
-import sys
 import time
 import urllib.error
 import urllib.parse
@@ -11,7 +10,6 @@ import urllib.request
 from typing import Generator
 from typing import Sequence
 from typing import Union
-
 
 SELF = os.path.dirname(__file__)
 
@@ -144,7 +142,7 @@ def neighbours8(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 			yield (x + xD, y + yD)
 
 
-def parseCoordsInt(s: str) -> dict[tuple(int, int), int]:
+def parseCoordsInt(s: str) -> dict[tuple[int, int], int]:
 	coords = dict()
 	for y, line in enumerate(s.splitlines()):
 		for x, char in enumerate(line):
