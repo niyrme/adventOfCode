@@ -42,12 +42,12 @@ def downloadInput() -> int:
 
 	year, day = getYrD()
 	print(f"getting input for: {year}/{day}")
-	for _ in range(1):
+	for _ in range(5):
 		try:
 			s = _getInput(year, day)
 		except urllib.error.URLError as e:
 			print(f"not ready: {e}")
-			time.sleep(2)
+			time.sleep(1)
 		else:
 			break
 	else:
