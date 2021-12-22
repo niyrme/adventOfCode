@@ -19,7 +19,7 @@ class Scanner(NamedTuple):
 		id_ = int(lines[0][12:][:-4])
 		points = []
 		for line in lines[1:]:
-			xS,yS,zS = line.split(",")
+			xS, yS, zS = line.split(",")
 			points.append((int(xS), int(yS), int(zS)))
 		return cls(id_, points)
 
