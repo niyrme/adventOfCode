@@ -9,7 +9,6 @@ import re
 
 import pytest
 
-
 PAT_PAIR = re.compile(r"\[(\d+),(\d+)\]")
 PAT_BIGN = re.compile(r"\d\d+")
 
@@ -26,6 +25,7 @@ def reduce(s: str) -> str:
 			if prev.count("[") - prev.count("]") >= 4:
 				def nextLeft(m: re.Match[str]) -> str:
 					return str(int(m[0]) + int(pair[1]))
+
 				def nextRight(m: re.Match[str]) -> str:
 					return str(int(m[0]) + int(pair[2]))
 
@@ -39,7 +39,8 @@ def reduce(s: str) -> str:
 			if bigMatch is not None:
 				def split(m: re.Match[str]) -> str:
 					v = int(m[0])
-					return f"[{v // 2},{math.ceil(v/2)}]"
+					return f"[{v // 2},{math.ceil(v / 2)}]"
+
 				s = PAT_BIGN.sub(split, s, count=1)
 				continue
 			else:
@@ -62,7 +63,6 @@ def getSum(s: str) -> int:
 
 
 def part1(inp: str) -> int:
-
 	lines = inp.splitlines()
 
 	line = lines.pop(0)
