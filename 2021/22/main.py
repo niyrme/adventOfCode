@@ -1,39 +1,125 @@
 #!/usr/bin/env python3
+from __future__ import annotations
 
 import os
+from typing import NamedTuple
 
 import pytest
 
 
+class Cube(NamedTuple):
+	x0: int
+	x1: int
+	y0: int
+	y1: int
+	z0: int
+	z1: int
+
+	@property
+	def size(self) -> int:
+		return (
+			(self.x1 - self.x0) *
+			(self.y1 - self.y0) *
+			(self.z1 - self.z0)
+		)
+
+	@classmethod
+	def fromStr(cls, xS: str, yS: str, zS: str) -> Cube:
+		# used for part 2
+		x1S, x2S = xS.split("..")
+		y1S, y2S = yS.split("..")
+		z1S, z2S = zS.split("..")
+
+		return cls(
+			int(x1S), int(x2S) + 1,
+			int(y1S), int(y2S) + 1,
+			int(z1S), int(z2S) + 1,
+		)
+
+	def intersects(self, other: Cube) -> bool:
+		return (
+			self.x0 <= other.x1 - 1 and
+			self.x1 - 1 >= other.x0 and
+			self.y0 <= other.y1 - 1 and
+			self.y1 - 1 >= other.y0 and
+			self.z0 <= other.z1 - 1 and
+			self.z1 - 1 >= other.z0
+		)
+
+	def contains(self, other: Cube) -> bool:
+		return (
+			self.x0 <= other.x0 and
+			self.x1 >= other.x1 and
+			self.y0 <= other.y0 and
+			self.y1 >= other.y1 and
+			self.z0 <= other.z0 and
+			self.z1 >= other.z1
+		)
+
+	def sub(self, other: Cube) -> list[Cube]:
+		if not self.intersects(other):
+			return [self]
+		elif other.contains(self):
+			return []
+
+		xs = sorted((self.x0, self.x1, other.x0, other.x1))
+		ys = sorted((self.y0, self.y1, other.y0, other.y1))
+		zs = sorted((self.z0, self.z1, other.z0, other.z1))
+
+		cubes = []
+		for x1, x2 in zip(xs, xs[1:]):
+			for y1, y2 in zip(ys, ys[1:]):
+				for z1, z2 in zip(zs, zs[1:]):
+					cube = Cube(x1, x2, y1, y2, z1, z2)
+					if self.contains(cube) and not cube.intersects(other):
+						cubes.append(cube)
+
+		return cubes
+
+
+class Reboot(NamedTuple):
+	on: bool
+	cube: Cube
+
+	@classmethod
+	def fromStr(cls, s: str) -> Reboot:
+		action, ranges = s.split()
+		xS, yS, zS = ranges.split(",")
+		return cls(action == "on", Cube.fromStr(xS[2:], yS[2:], zS[2:]))
+
+
 def part1(inp: str) -> int:
 	lines = inp.splitlines()
-	coords = set()
-	lst: list[tuple[bool, tuple[int, int], tuple[int, int], tuple[int, int]]] = []
+	reboots: list[Reboot] = []
 
 	for line in lines:
 		action, ranges = line.split()
 		xRangeS, yRangeS, zRangeS = ranges.split(",")
+
 		x1S, x2S = xRangeS[2:].split("..")
 		y1S, y2S = yRangeS[2:].split("..")
 		z1S, z2S = zRangeS[2:].split("..")
 
-		lst.append((
+		reboots.append(Reboot(
 			action == "on",
-			(int(x1S), int(x2S)),
-			(int(y1S), int(y2S)),
-			(int(z1S), int(z2S)),
+			Cube(
+				int(x1S), int(x2S),
+				int(y1S), int(y2S),
+				int(z1S), int(z2S),
+			),
 		))
 
-	for step in lst:
-		a, (x1, x2), (y1, y2), (z1, z2) = step
+	coords = set()
+	for reboot in reboots:
+		cube = reboot.cube
 		newCoords = {
 			(x, y, z)
-			for x in range(max(x1, -50), min(x2, 50) + 1)
-			for y in range(max(y1, -50), min(y2, 50) + 1)
-			for z in range(max(z1, -50), min(z2, 50) + 1)
+			for x in range(max(cube.x0, -50), min(cube.x1, 50) + 1)
+			for y in range(max(cube.y0, -50), min(cube.y1, 50) + 1)
+			for z in range(max(cube.z0, -50), min(cube.z1, 50) + 1)
 		}
 
-		if a:
+		if reboot.on:
 			coords |= newCoords
 		else:
 			coords -= newCoords
@@ -42,7 +128,19 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	raise NotImplementedError
+	reboots: list[Reboot] = [Reboot.fromStr(line) for line in inp.splitlines()]
+
+	cubes: list[Cube] = []
+	for reboot in reboots:
+		cubes = [
+			part
+			for cube in cubes
+			for part in cube.sub(reboot.cube)
+		]
+		if reboot.on:
+			cubes.append(reboot.cube)
+
+	return sum(cube.size for cube in cubes)
 
 
 def main() -> int:
