@@ -26,11 +26,11 @@ def part1(inp: str) -> int:
 				board[board.index(number)] = None
 			for i in range(5):
 				if board[(i * 5):((i * 5) + 5)] == [None] * 5:
-					return number * sum(value if value is not None else 0 for value in board)
+					return number * sum(value for value in board if value is not None)
 				else:
 					rotated = list(board[(j * 5) + i] for i in range(5) for j in range(5))
 					if rotated[(i * 5):((i * 5) + 5)] == [None] * 5:
-						return number * sum(value if value is not None else 0 for value in board)
+						return number * sum(value for value in board if value is not None)
 
 	raise AssertionError("unreachable")
 
@@ -69,12 +69,12 @@ def part2(inp: str) -> int:
 			for i in range(5):
 				if board[(i * 5):((i * 5) + 5)] == [None] * 5 and boardI not in seen:
 					seen.add(boardI)
-					lastWonScore = number * sum(value if value is not None else 0 for value in board)
+					lastWonScore = number * sum(value for value in board if value is not None)
 				else:
 					rotated = list(board[(j * 5) + i] for i in range(5) for j in range(5))
 					if rotated[(i * 5):((i * 5) + 5)] == [None] * 5 and boardI not in seen:
 						seen.add(boardI)
-						lastWonScore = number * sum(value if value is not None else 0 for value in board)
+						lastWonScore = number * sum(value for value in board if value is not None)
 	else:
 		return lastWonScore
 
