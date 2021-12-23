@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import os
 from collections import Counter
+from typing import Literal
 from typing import NamedTuple
 
 import pytest
@@ -25,8 +26,8 @@ class Scanner(NamedTuple):
 
 
 class AxisInfo(NamedTuple):
-	axis: int
-	sign: int
+	axis: Literal[0, 1, 2]
+	sign: Literal[-1, 1]
 	diff: int
 
 
