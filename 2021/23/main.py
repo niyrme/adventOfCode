@@ -6,19 +6,11 @@ import pytest
 
 
 def part1(inp: str) -> int:
-	lines = inp.splitlines()
-	for line in lines:
-		...
-
-	raise NotImplementedError
+	raise NotImplementedError("Not smort enough")
 
 
 def part2(inp: str) -> int:
-	lines = inp.splitlines()
-	for line in lines:
-		...
-
-	raise NotImplementedError
+	raise NotImplementedError("Not smort enough")
 
 
 def main() -> int:
@@ -31,13 +23,17 @@ def main() -> int:
 
 
 EXAMPLE_INPUT = """
-
+#############
+#...........#
+###B#C#B#D###
+  #A#D#C#A#
+  #########
 """.strip()
 
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT, 0),
+		pytest.param(EXAMPLE_INPUT, 12521),
 	),
 )
 def testPart1(inp: str, expected: int):

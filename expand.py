@@ -6,7 +6,7 @@ from typing import Sequence
 
 
 def addDay(year: int, day: int) -> None:
-	day = str(day).rjust(2, '0')
+	day = str(day).rjust(2, "0")
 
 	print(f"Adding {year}/{day}")
 

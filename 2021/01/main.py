@@ -6,19 +6,19 @@ import pytest
 
 
 def part1(inp: str) -> int:
-	lines = inp.splitlines()
-	for line in lines:
-		...
-
-	raise NotImplementedError
+	depths = tuple(int(line) for line in inp.splitlines())
+	return tuple(
+		(depths[i - 1] < depths[i])
+		for i in range(1, len(depths))
+	).count(True)
 
 
 def part2(inp: str) -> int:
-	lines = inp.splitlines()
-	for line in lines:
-		...
-
-	raise NotImplementedError
+	depths = tuple(int(line) for line in inp.splitlines())
+	return part1("\n".join(
+		str(sum(depths[i:(i + 3)]))
+		for i in range(len(depths) - 2)
+	))
 
 
 def main() -> int:
@@ -31,13 +31,22 @@ def main() -> int:
 
 
 EXAMPLE_INPUT = """
-
+199
+200
+208
+210
+200
+207
+240
+269
+260
+263
 """.strip()
 
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT, 0),
+		pytest.param(EXAMPLE_INPUT, 7),
 	),
 )
 def testPart1(inp: str, expected: int):
@@ -46,7 +55,7 @@ def testPart1(inp: str, expected: int):
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
-		pytest.param(EXAMPLE_INPUT, 0),
+		pytest.param(EXAMPLE_INPUT, 5),
 	),
 )
 def testPart2(inp: str, expected: int):
