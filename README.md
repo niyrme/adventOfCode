@@ -5,7 +5,7 @@ My solutions of [AdventOfCode]
 
 ## Solutions
 - [2020](./2020/) - Go
-- [2021](./2021/) - Python
+- [2021](./2021/) <small>DONE</small> - Python
 
 ### expand script
 - Requires template in `YEAR/00`
