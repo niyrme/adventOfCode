@@ -74,13 +74,10 @@ RE_ALREADY_DONE = re.compile(r"You don't seem to be solving.*?")
 RIGHT_MSG = "That's the right answer!"
 
 
-def _sumbit252(year: int) -> int:
-	parser = argparse.ArgumentParser()
-	parser.parse_args()
-
+def _submit252(year: int) -> int:
 	answerResp = _postAnswer(year, 25, 2, 0)
 	if "Congratulations!" in answerResp:
-		print("\033[42mCongratulations!\033[m")
+		print("\033[32mCongratulations!\033[m")
 		return 0
 	else:
 		print(f"{answerResp=}")
@@ -101,6 +98,9 @@ def submit(args: Sequence[str] = None) -> int:
 
 	print(f"{answer=}")
 
+	if (day, parsedArgs.part) == (25, 2):
+		return _submit252(year)
+
 	answerResp = _postAnswer(year, day, parsedArgs.part, answer)
 
 	for errRe in (
@@ -118,7 +118,7 @@ def submit(args: Sequence[str] = None) -> int:
 
 		if day == 25:
 			time.sleep(0.5)
-			return _sumbit252(year)
+			return _submit252(year)
 		else:
 			return 0
 	else:
