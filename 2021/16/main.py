@@ -21,66 +21,64 @@ class Packet(NamedTuple):
 	packets: tuple[Packet, ...] = tuple()
 
 
-def part1(inp: str) -> int:
-	bitS = ""
-	for hx in inp.strip():
-		bitS += f"{int(hx, 16):04b}"
+def parsePacket(bitS, i: int) -> tuple[int, Packet]:
+	def read(n: int) -> int:
+		nonlocal i
+		ret = int(bitS[i:i + n], 2)
+		i += n
+		return ret
 
-	def parsePacket(i: int) -> tuple[int, Packet]:
-		def read(n: int) -> int:
-			nonlocal i
-			ret = int(bitS[i:i + n], 2)
-			i += n
-			return ret
+	packVer = read(3)
+	packTypID = read(3)
 
-		packVer = read(3)
-		packTypID = read(3)
-
-		if packTypID == 4:
-			packVal = 0
+	if packTypID == 4:
+		packVal = 0
+		chunk = read(5)
+		packVal += chunk & 0b1111
+		while chunk & 0b10000:
 			chunk = read(5)
+			packVal <<= 4
 			packVal += chunk & 0b1111
-			while chunk & 0b10000:
-				chunk = read(5)
-				packVal <<= 4
-				packVal += chunk & 0b1111
+
+		return i, Packet(
+			ver=packVer,
+			typID=packTypID,
+			val=packVal,
+		)
+	else:
+		op = read(1)
+		if op == 0:
+			packsLen = read(15)
+			j = i
+			i += packsLen
+			packs = []
+			while j < i:
+				j, packet = parsePacket(bitS, j)
+				packs.append(packet)
 
 			return i, Packet(
 				ver=packVer,
 				typID=packTypID,
-				val=packVal,
+				packets=tuple(packs),
 			)
 		else:
-			op = read(1)
-			if op == 0:
-				packsLen = read(15)
-				j = i
-				i += packsLen
-				packs = []
-				while j < i:
-					j, packet = parsePacket(j)
-					packs.append(packet)
+			subPacks = read(11)
+			packs = []
+			for _ in range(subPacks):
+				i, packet = parsePacket(bitS, i)
+				packs.append(packet)
 
-				return i, Packet(
-					ver=packVer,
-					typID=packTypID,
-					packets=tuple(packs),
-				)
-			else:
-				subPacks = read(11)
-				packs = []
-				for _ in range(subPacks):
-					i, packet = parsePacket(i)
-					packs.append(packet)
+			return i, Packet(
+				ver=packVer,
+				typID=packTypID,
+				packets=tuple(packs),
+			)
 
-				return i, Packet(
-					ver=packVer,
-					typID=packTypID,
-					packets=tuple(packs),
-				)
 
+def part1(inp: str) -> int:
+	bitS = "".join(f"{int(hx, 16):04b}" for hx in inp.strip())
 	total = 0
-	todo = [parsePacket(0)[1]]
+	todo = [parsePacket(bitS, 0)[1]]
 	while todo:
 		nextP = todo.pop()
 		total += nextP.ver
@@ -90,63 +88,6 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
-	bitS = ""
-	for hx in inp.strip():
-		bitS += f"{int(hx, 16):04b}"
-
-	def parsePacket(i: int) -> tuple[int, Packet]:
-		def read(n: int) -> int:
-			nonlocal i
-			ret = int(bitS[i:i + n], 2)
-			i += n
-			return ret
-
-		packVer = read(3)
-		packTypID = read(3)
-
-		if packTypID == 4:
-			packVal = 0
-			chunk = read(5)
-			packVal += chunk & 0b1111
-			while chunk & 0b10000:
-				chunk = read(5)
-				packVal <<= 4
-				packVal += chunk & 0b1111
-
-			return i, Packet(
-				ver=packVer,
-				typID=packTypID,
-				val=packVal,
-			)
-		else:
-			op = read(1)
-			if op == 0:
-				packsLen = read(15)
-				j = i
-				i += packsLen
-				packs = []
-				while j < i:
-					j, packet = parsePacket(j)
-					packs.append(packet)
-
-				return i, Packet(
-					ver=packVer,
-					typID=packTypID,
-					packets=tuple(packs),
-				)
-			else:
-				subPacks = read(11)
-				packs = []
-				for _ in range(subPacks):
-					i, packet = parsePacket(i)
-					packs.append(packet)
-
-				return i, Packet(
-					ver=packVer,
-					typID=packTypID,
-					packets=tuple(packs),
-				)
-
 	def getVal(packet: Packet) -> int:
 		if packet.typID in (0, 1, 2, 3):
 			return {
@@ -166,7 +107,8 @@ def part2(inp: str) -> int:
 		else:
 			raise AssertionError("unreachable", packet)
 
-	return getVal(parsePacket(0)[1])
+	bitS = "".join(f"{int(hx, 16):04b}" for hx in inp.strip())
+	return getVal(parsePacket(bitS, 0)[1])
 
 
 def main() -> int:
