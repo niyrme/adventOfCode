@@ -51,16 +51,11 @@ def part2(inp: str) -> int:
 					_board.append(int(num.strip()))
 		boards.append(_board)
 
-	breakTop = False
 	seen: set[int] = set()
 	lastWonScore = -1
 	for number in numbers:
-		if breakTop:
-			break
-
 		for boardI, board in enumerate(boards):
 			if len(boards) == 0:
-				breakTop = True
 				break
 
 			if number in board:
@@ -75,10 +70,8 @@ def part2(inp: str) -> int:
 					if rotated[(i * 5):((i * 5) + 5)] == [None] * 5 and boardI not in seen:
 						seen.add(boardI)
 						lastWonScore = number * sum(value for value in board if value is not None)
-	else:
-		return lastWonScore
 
-	raise AssertionError("unreachable")
+	return lastWonScore
 
 
 def main() -> int:
