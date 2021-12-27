@@ -2,7 +2,6 @@
 
 import os
 from collections import Counter
-from typing import Callable
 from typing import Sequence
 
 import pytest
@@ -19,8 +18,12 @@ def getFishCount(inp: Sequence[int], days: int) -> int:
 	return sum(fish.values())
 
 
-part1: Callable[[str], int] = lambda inp: getFishCount(tuple(int(line) for line in inp.split(",")), 80)
-part2: Callable[[str], int] = lambda inp: getFishCount(tuple(int(line) for line in inp.split(",")), 256)
+def part1(inp: str) -> int:
+	return getFishCount(tuple(int(line) for line in inp.split(",")), 80)
+
+
+def part2(inp: str) -> int:
+	return getFishCount(tuple(int(line) for line in inp.split(",")), 256)
 
 
 def main() -> int:

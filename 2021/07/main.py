@@ -2,7 +2,6 @@
 
 import os
 import statistics
-from typing import Callable
 
 import pytest
 
@@ -13,8 +12,12 @@ def part1(inp: str) -> int:
 
 
 def part2(inp: str) -> int:
+	def getN(n: int) -> int:
+		return sum(
+			(abs(num - n) * (abs(num - n) + 1) // 2)
+			for num in nums
+		)
 	nums = tuple(int(line) for line in inp.split(","))
-	getN: Callable[[int], int] = lambda n: sum(abs(num - n) * (abs(num - n) + 1) // 2 for num in nums)
 	median = statistics.median(nums)
 	num = getN(median)
 

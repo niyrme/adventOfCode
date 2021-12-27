@@ -16,19 +16,21 @@ def neighbours(x: int, y: int) -> Generator[tuple[int, int], None, None]:
 
 
 def part1(inp: str) -> int:
-	coords: dict[tuple[int, int], int] = defaultdict(int)
-	for y, line in enumerate(inp.splitlines()):
-		for x, char in enumerate(line):
-			coords[(x, y)] = int(char)
+	coords = defaultdict(int, {
+		(x, y): int(char)
+		for y, line in enumerate(inp.splitlines())
+		for x, char in enumerate(line)
+	})
 
 	return sum((i + 1) * int(all(coords.get(at, 9) > i for at in neighbours(x, y))) for (x, y), i in coords.items())
 
 
 def part2(inp: str) -> int:
-	coords: dict[tuple[int, int], int] = defaultdict(int)
-	for y, line in enumerate(inp.splitlines()):
-		for x, char in enumerate(line):
-			coords[(x, y)] = int(char)
+	coords = defaultdict(int, {
+		(x, y): int(char)
+		for y, line in enumerate(inp.splitlines())
+		for x, char in enumerate(line)
+	})
 
 	top3 = [0, 0, 0]
 

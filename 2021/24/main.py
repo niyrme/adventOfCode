@@ -76,12 +76,6 @@ class Expr:
 	def op(self):
 		return self._op
 
-	def __rfloordiv__(self, other):
-		raise AssertionError("rfloordiv not supported", other, self)
-
-	def __rmod__(self, other):
-		raise AssertionError("rmod not supported", other, self)
-
 
 class Var:
 	def __init__(self, value: int) -> None:
@@ -110,21 +104,6 @@ class Var:
 
 	def __mul__(self, other):
 		return Expr(other, "*", self)
-
-	def __rmul__(self, other):
-		raise AssertionError("rmul not supported", self, other)
-
-	def __floordiv__(self, other):
-		raise AssertionError("floordiv not supported", self, other)
-
-	def __rfloordiv__(self, other):
-		raise AssertionError("rfloordiv not supported", self, other)
-
-	def __mod__(self, other):
-		raise AssertionError("mod not supported", self, other)
-
-	def __rmod__(self, other):
-		raise AssertionError("rmod not supported", self, other)
 
 
 def compute(inp: str):
