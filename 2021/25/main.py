@@ -1,14 +1,17 @@
 #!/usr/bin/env python3
 
 import os
-from enum import Enum
+from typing import NamedTuple
 
 import pytest
 
 
-class Direction(Enum):
-	RIGHT = (1, 0)
-	DOWN = (0, 1)
+class Direction(NamedTuple):
+	x: int
+	y: int
+
+RIGHT = Direction(1, 0)
+DOWN = Direction(0, 1)
 
 
 def part1(inp: str) -> int:
@@ -16,11 +19,9 @@ def part1(inp: str) -> int:
 	coords: dict[tuple[int, int], Direction] = dict()
 	for y, line in enumerate(lines):
 		for x, char in enumerate(line):
-			if char in (">", "v"):
-				coords[(x, y)] = {
-					"v": Direction.DOWN,
-					">": Direction.RIGHT,
-				}[char]
+			if char == ".":
+				continue
+			coords[(x, y)] = {"v": DOWN, ">": RIGHT}[char]
 
 	i = 0
 	while True:
@@ -28,29 +29,27 @@ def part1(inp: str) -> int:
 
 		newCoords1: dict[tuple[int, int], Direction] = dict()
 		for (x, y), direction in coords.items():
-			if direction == Direction.RIGHT:
-				pos = (
-					(x + direction.value[0]) % len(lines[0]),
-					(y + direction.value[1]) % len(lines),
+			pos = (x, y)
+			if direction == RIGHT:
+				newPos = (
+					(x + direction.x) % len(lines[0]),
+					(y + direction.y) % len(lines),
 				)
-				if pos in coords:
-					pos = (x, y)
-				newCoords1[pos] = direction
-			else:
-				newCoords1[(x, y)] = direction
+				if newPos not in coords:
+					pos = newPos
+			newCoords1[pos] = direction
 
 		newCoords2: dict[tuple[int, int], Direction] = dict()
 		for (x, y), direction in newCoords1.items():
-			if direction == Direction.DOWN:
-				pos = (
-					(x + direction.value[0]) % len(lines[0]),
-					(y + direction.value[1]) % len(lines),
+			pos = (x, y)
+			if direction == DOWN:
+				newPos = (
+					(x + direction.x) % len(lines[0]),
+					(y + direction.y) % len(lines),
 				)
-				if pos in newCoords1:
-					pos = (x, y)
-				newCoords2[pos] = direction
-			else:
-				newCoords2[(x, y)] = direction
+				if newPos not in newCoords1:
+					pos = newPos
+			newCoords2[pos] = direction
 
 		if newCoords2 == coords:
 			break
