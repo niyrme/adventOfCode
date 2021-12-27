@@ -12,7 +12,7 @@ def main() -> int:
 	parser.add_argument("day", type=int, help="day to run. must be in range 1-25, runs all if not given")
 	parser.add_argument("-p", "--part", type=int, help="specific part to run", choices=(1, 2), dest="part")
 	parser.add_argument("-T", "--skip-tests", action="store_true", help="skip tests", dest="skipTests")
-	parser.add_argument("-t", "--tests", action="store_true", help="only run tests", dest="runTests")
+	parser.add_argument("-t", "--tests", action="store_true", help="only run tests (takes priority over -T)", dest="runTests")
 	args = parser.parse_args()
 
 	if not 0 < args.day < 26:
@@ -23,6 +23,10 @@ def main() -> int:
 
 	if dayStr not in os.listdir(os.path.dirname(__file__)):
 		print(f"Day {dayStr} not found", file=sys.stderr)
+		return 1
+
+	if args.day == 25 and args.part == 2:
+		print(f"There is no part 2 on day 25", file=sys.stderr)
 		return 1
 
 	print(f"Running {dayStr}")
