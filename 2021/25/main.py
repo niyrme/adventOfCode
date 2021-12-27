@@ -29,28 +29,26 @@ def part1(inp: str) -> int:
 		newCoords1: dict[tuple[int, int], Direction] = dict()
 		for (x, y), direction in coords.items():
 			if direction == Direction.RIGHT:
-				newPos = (
+				pos = (
 					(x + direction.value[0]) % len(lines[0]),
 					(y + direction.value[1]) % len(lines),
 				)
-				if newPos not in coords:
-					newCoords1[newPos] = direction
-				else:
-					newCoords1[(x, y)] = direction
+				if pos in coords:
+					pos = (x, y)
+				newCoords1[pos] = direction
 			else:
 				newCoords1[(x, y)] = direction
 
 		newCoords2: dict[tuple[int, int], Direction] = dict()
 		for (x, y), direction in newCoords1.items():
 			if direction == Direction.DOWN:
-				newPos = (
+				pos = (
 					(x + direction.value[0]) % len(lines[0]),
 					(y + direction.value[1]) % len(lines),
 				)
-				if newPos not in newCoords1:
-					newCoords2[newPos] = direction
-				else:
-					newCoords2[(x, y)] = direction
+				if pos in newCoords1:
+					pos = (x, y)
+				newCoords2[pos] = direction
 			else:
 				newCoords2[(x, y)] = direction
 
