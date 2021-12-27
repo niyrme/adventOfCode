@@ -7,10 +7,10 @@ import pytest
 
 def part1(inp: str) -> int:
 	depths = tuple(int(line) for line in inp.splitlines())
-	return tuple(
-		(depths[i - 1] < depths[i])
+	return sum(
+		int(depths[i - 1] < depths[i])
 		for i in range(1, len(depths))
-	).count(True)
+	)
 
 
 def part2(inp: str) -> int:
