@@ -35,38 +35,31 @@ def main() -> int:
 	if args.part is not None:
 		testArgs += ["-k", f"testPart{args.part}"]
 
-	if args.runTests:
+	if args.runTests is True or args.skipTests is False:
 		testRet: pytest.ExitCode = pytest.main(testArgs)
 		if testRet not in (pytest.ExitCode.OK, pytest.ExitCode.NO_TESTS_COLLECTED):
-			print(f"{dayStr} tests failed with exit code {int(testRet)}\n", file=sys.stderr)
+			print(f"Day {dayStr} tests failed with exit code {int(testRet)}\n", file=sys.stderr)
 			return int(testRet)
-		return 0
 
-	if args.skipTests is False:
-		testRet: pytest.ExitCode = pytest.main(testArgs)
-		if testRet not in (pytest.ExitCode.OK, pytest.ExitCode.NO_TESTS_COLLECTED):
-			print(f"{dayStr} tests failed with exit code {int(testRet)}\n", file=sys.stderr)
-			return int(testRet)
+		if args.runTests:
+			return 0
 
 	dayMain = __import__(dayStr, fromlist=("main",)).main
 
 	if args.part is not None:
-		inp = open(f"{dayStr}/input.txt", "r")
-
 		if args.part == 1:
 			partFn = dayMain.part1
 		else:
 			partFn = dayMain.part2
 
-		print(f"Part {args.part}: {partFn(inp.read())}")
-		inp.close()
+		with open(f"{dayStr}/input.txt", "r") as inp:
+			print(f"Part {args.part}: {partFn(inp.read())}")
 
-		ret = 0
+		return 0
 	else:
 		ret = dayMain.main()
 		print()
-
-	return ret
+		return ret
 
 
 if __name__ == "__main__":
