@@ -8,19 +8,15 @@ from typing import Union
 import pytest
 
 
+def cmp(a: int, b: int) -> int:
+	return int(a > b) - int(a < b)
+
+
 def part1(inp: str) -> int:
-	lines = tuple(line for line in inp.splitlines())
-	newInp = []
-
-	for x in list(zip(*lines)):
-		newInp.append("".join(x))
-
-	bitString = ""
-	for x in newInp:
-		bitString += {
-			True: "0",
-			False: "1",
-		}[str(x).count("0") > str(x).count("1")]
+	bitString = "".join({ True: "0", False: "1" }[str(x).count("0") > str(x).count("1")]
+		for x in ("".join(i)
+		for i in zip(*tuple(line for line in inp.splitlines())))
+	)
 
 	return int(bitString, 2) * int("".join("1" if x == "0" else "0" for x in bitString), 2)
 
@@ -31,12 +27,7 @@ def mostCommon(bitStrings: Sequence[str], pos: int) -> Union[Literal[0, 1], None
 	count0 = bitRow.count("0")
 	count1 = bitRow.count("1")
 
-	if count0 > count1:
-		return 0
-	elif count0 < count1:
-		return 1
-	else:
-		return None
+	return cmp(count0, count1)
 
 
 def filterBits(bitStrings: Sequence[str], pos: int, expected: int) -> Sequence[str]:
@@ -66,9 +57,9 @@ def part2(inp: str) -> int:
 
 	for i in range(1, len(lines[0])):
 		if len(oxygen) > 1:
-			oxygen = filterBits(oxygen, i, {None: 1, 0: 0, 1: 1}[mostCommon(oxygen, i)])
+			oxygen = filterBits(oxygen, i, {-1: 1, 0: 1, 1: 0}[mostCommon(oxygen, i)])
 		if len(co2) > 1:
-			co2 = filterBits(co2, i, {None: 0, 0: 1, 1: 0}[mostCommon(co2, i)])
+			co2 = filterBits(co2, i, {-1: 0, 0: 0, 1: 1}[mostCommon(co2, i)])
 
 	oxygenS = "".join(oxygen)
 	co2S = "".join(co2)
