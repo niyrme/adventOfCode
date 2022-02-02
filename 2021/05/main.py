@@ -6,45 +6,33 @@ from collections import Counter
 import pytest
 
 
-def cmp(a: int, b: int) -> int:
-	return int(a > b) - int(a < b)
-
-
-def part1(inp: str) -> int:
+def compute(inp: str, skipDiagonal: bool) -> int:
 	board = Counter()
 	for line in inp.splitlines():
-		frm, to = line.strip().split("->")
-		x1, y1 = (int(d) for d in frm.split(","))
-		x2, y2 = (int(d) for d in to.split(","))
+		src, dst = line.strip().split("->")
+		x1, y1 = (int(d) for d in src.split(","))
+		x2, y2 = (int(d) for d in dst.split(","))
 
 		# skip line not horizontal or vertical
-		if not (x1 == x2 or y1 == y2):
+		if (skipDiagonal is True) and (not (x1 == x2 or y1 == y2)):
 			continue
 
 		pos = (x1, y1)
-		changeX = cmp(x2, x1)
-		changeY = cmp(y2, y1)
+		# inline cmp function from python 2
+		changeX = int(x2 > x1) - int(x2 < x1)
+		changeY = int(y2 > y1) - int(y2 < y1)
 		while pos != (x2 + changeX, y2 + changeY):
 			board[pos] += 1
 			pos = (pos[0] + changeX, pos[1] + changeY)
 	return sum(x > 1 for x in board.values())
+
+
+def part1(inp: str) -> int:
+	return compute(inp, True)
 
 
 def part2(inp: str) -> int:
-	board = Counter()
-	for line in inp.splitlines():
-		frm, to = line.strip().split("->")
-		x1, y1 = (int(d) for d in frm.split(","))
-		x2, y2 = (int(d) for d in to.split(","))
-
-		pos = (x1, y1)
-		changeX = cmp(x2, x1)
-		changeY = cmp(y2, y1)
-		while pos != (x2 + changeX, y2 + changeY):
-			board[pos] += 1
-			pos = (pos[0] + changeX, pos[1] + changeY)
-
-	return sum(x > 1 for x in board.values())
+	return compute(inp, False)
 
 
 def main() -> int:
