@@ -6,9 +6,8 @@ from collections import Counter
 import pytest
 
 
-# not the actual python 2 cmp, because output is flipped
 def cmp(a: int, b: int) -> int:
-	return int(a < b) - int(a > b)
+	return int(a > b) - int(a < b)
 
 
 def part1(inp: str) -> int:
@@ -18,13 +17,16 @@ def part1(inp: str) -> int:
 		x1, y1 = (int(d) for d in frm.split(","))
 		x2, y2 = (int(d) for d in to.split(","))
 
-		if x1 == x2 or y1 == y2:
-			pos = (x1, y1)
-			horizontalChange = cmp(x1, x2)
-			verticalChange = cmp(y1, y2)
-			while pos != (x2 + horizontalChange, y2 + verticalChange):
-				board[pos] += 1
-				pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
+		# skip line not horizontal or vertical
+		if not (x1 == x2 or y1 == y2):
+			continue
+
+		pos = (x1, y1)
+		changeX = cmp(x2, x1)
+		changeY = cmp(y2, y1)
+		while pos != (x2 + changeX, y2 + changeY):
+			board[pos] += 1
+			pos = (pos[0] + changeX, pos[1] + changeY)
 	return sum(x > 1 for x in board.values())
 
 
@@ -36,11 +38,11 @@ def part2(inp: str) -> int:
 		x2, y2 = (int(d) for d in to.split(","))
 
 		pos = (x1, y1)
-		horizontalChange = cmp(x1, x2)
-		verticalChange = cmp(y1, y2)
-		while pos != (x2 + horizontalChange, y2 + verticalChange):
+		changeX = cmp(x2, x1)
+		changeY = cmp(y2, y1)
+		while pos != (x2 + changeX, y2 + changeY):
 			board[pos] += 1
-			pos = (pos[0] + horizontalChange, pos[1] + verticalChange)
+			pos = (pos[0] + changeX, pos[1] + changeY)
 
 	return sum(x > 1 for x in board.values())
 
@@ -66,7 +68,6 @@ EXAMPLE_INPUT = """
 0,0 -> 8,8
 5,5 -> 8,2
 """.strip()
-
 
 @pytest.mark.parametrize(
 	("inp", "expected"), (
